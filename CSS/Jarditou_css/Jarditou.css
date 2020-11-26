@@ -1,0 +1,90 @@
+.row-1 .column-1 {
+    width: 50%;
+    float: left;    
+}
+
+.row-1 .column-1 p {
+    margin-bottom: 2px;
+    margin-top: 0px;
+}
+
+.row-1 .column-1 img {
+    width: 40%;
+    padding-left: 20px;
+}
+
+.row-1 .column-2 {
+    width: 50%;
+    float: left;
+}
+
+.row-1 .column-2 h1 {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 100;
+    font-size: 36px;
+    text-align: left;
+    padding-top: 12px;
+    margin-top: 0px;
+}
+
+.row-2 {
+    clear: left;
+}
+
+.row-2 nav {
+    background-color: black;
+    padding: 2px;
+}
+
+.row-2 li {
+    display: inline;
+}
+
+.row-2 a {
+    color: white;
+    padding: 10px;
+}
+
+.row-3 p {
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.row-3 img {
+    width: 100%;
+}
+
+.row-4 .column-1 {
+    width: 65%;
+    float: left;
+}
+
+aside {
+    width: 35%;
+    float: left;
+    background-color: lightgrey;
+    height: 550px;
+    margin-bottom: 5px;
+}
+
+footer {
+    clear: left;
+}
+
+
+@media screen and (max-width: 768px) 
+{ 
+    aside
+    { 
+        display: none;     
+    } 
+}  
+
+
+@media screen and (max-width: 768px) 
+{ 
+    .row-2 li 
+    { 
+        display: block; 
+    } 
+} 
