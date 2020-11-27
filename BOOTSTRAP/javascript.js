@@ -1,6 +1,3 @@
-var date = document.getElementById("formGroupExampleInput3").value;
-console.log(document.getElementById("formGroupExampleInput3").value);
-
 function controler()
 {
     var filtreString = new RegExp("^[A-Z a-z]+$");
