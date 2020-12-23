@@ -42,13 +42,13 @@
                                 <a class="nav-link" href="index.php"> Tableau </a>
                                 </li>
                                 <li class="nav-item" style="margin-left: 50px;">
-                                <a class="nav-link" href="contact.php"> Contact </a>
+                                <a class="nav-link"> Contact </a>    <!-- Ajouter href="contact.php" dans la balise <a> pour activer page Contact -->
                                 </li>
                             </ul>
                         </div>
                     </nav>
                 <!-- Image "Promotion sr lames de terrase" -->
-                <div class="row">
+                <div class="row"  style="margin:20px 0 20px 0">
                     <div class="col-12">
                         <img src="public/images/promotion.jpg" class="img-fluid w-100" alt="promotion">
                     </div>
