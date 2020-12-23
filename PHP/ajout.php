@@ -94,7 +94,7 @@
             <br><br>
 
             <label for="ajout"> Date d'ajout : </label> <br>
-            <input type="text"  name="add"  id="ajout"   value="year-month-day"  style="width:90%"  required>
+            <input type="text"  name="add"  id="ajout"  style="width:90%"  required>
             <br><br>
 
             <label for="modification"> Date de modification : </label> <br>

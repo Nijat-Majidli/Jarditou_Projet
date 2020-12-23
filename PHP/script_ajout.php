@@ -90,7 +90,7 @@ $requete->bindValue(':pro_ref', $pro_ref, PDO::PARAM_STR);
 $requete->bindValue(':pro_cat_id', $pro_cat_id, PDO::PARAM_INT);
 $requete->bindValue(':pro_libelle', $pro_libelle, PDO::PARAM_STR);
 $requete->bindValue(':pro_description', $pro_description, PDO::PARAM_STR);
-$requete->bindValue(':pro_prix', $pro_prix, PDO::PARAM_INT);
+$requete->bindValue(':pro_prix', doubleval($pro_prix), PDO::PARAM_STR);  //fonction doubleval() convertit le type de variable en décimale
 $requete->bindValue(':pro_stock', $pro_stock, PDO::PARAM_INT);
 $requete->bindValue(':pro_couleur', $pro_couleur, PDO::PARAM_STR);
 $requete->bindValue(':pro_photo', $pro_photo, PDO::PARAM_STR);
