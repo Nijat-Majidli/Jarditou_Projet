@@ -41,7 +41,7 @@ $pro_bloque = $_POST['bloq'];
 // 1. Le fichier a-t-il bien été téléchargé ?
 // 2. Le type du fichier envoyé par l'utilisateur est-il celui attendu (image, document Word, PDF...) ?
 // PHP fournit un extension nommée FILE_INFO qui fait référence en termes de sécurité. Voici comment l'utiliser, pour un type :
-// On met les types autorisés dans un tableau (ici pour une image)
+// On met les types autorisés dans un tableau (ici pour une image):
 $aMimeTypes = array("image/gif", "image/jpeg", "image/pjpeg", "image/jpg", "image/png", "image/x-png", "image/tiff");
 
 // On extrait le type du fichier via l'extension FILE_INFO 

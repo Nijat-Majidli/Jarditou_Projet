@@ -21,19 +21,19 @@
 
 
     <!-- PAGE MAIN CONTENT -->
-    <div class="container"  style="margin-top: 60px">
+    <div class="container"  style="margin-top:60px">
         <form  action="script_ajout.php"  method="post"  enctype="multipart/form-data"  style="padding-left: 100px">
             <!-- Upload photo of product -->
             <h5> Télécharger la photo du produit : </h5> 
-            <input type="file"  name="fichier"> 
+            <input type="file"  name="fichier"  required> 
             <br><br>
 
             <label for="id_produit"> Produit ID : </label> <br>
-            <input type="text"  name="id"  id="id_produit" style="width:90%">
+            <input type="text"  name="id"  id="id_produit" style="width:90%"  required>
             <br><br>
 
             <label for="reference"> Réference : </label> <br>
-            <input type="text"  name="ref"  id="reference"  style="width:90%">
+            <input type="text"  name="ref"  id="reference"  style="width:90%"  required>
             <br><br>
 
             <label for="categorie"> Catégorie : </label> <br>
@@ -56,7 +56,7 @@
                         {
                             while ($row = $result->fetch(PDO::FETCH_OBJ))
                             { ?>
-                                <option  value="<?php echo $row->cat_id ?>"> <?php echo $row->cat_nom ?> </option> 
+                                <option  value="<?php echo $row->cat_id ?>"  required>  <?php echo $row->cat_nom ?>  </option> 
                                 <br>
 
                         <?php
@@ -70,60 +70,63 @@
             <br><br>
 
             <label for="libelle"> Libellé : </label> <br>
-            <input type="text"  name="lib"  id="libelle"  style="width:90%">
+            <input type="text"  name="lib"  id="libelle"  style="width:90%"  required>
             <br><br>
 
             <label for="description"> Description : </label> <br>
-            <input type="text"  name="desc"  id="description"  style="width:90%">
+            <input type="text"  name="desc"  id="description"  style="width:90%"  required>
             <br><br>
 
             <label for="prix"> Prix : </label> <br>
-            <input type="text"  name="price"  id="prix"  style="width:90%">
+            <input type="text"  name="price"  id="prix"  style="width:90%"  required>
             <br><br>
 
             <label for="stock_produit"> Stock : </label> <br>
-            <input type="text"  name="stock"  id="stock_produit"  style="width:90%">
+            <input type="text"  name="stock"  id="stock_produit"  style="width:90%"  required>
             <br><br>
 
             <label for="couleur"> Couleur : </label> <br>
-            <input type="text"  name="color"  id="couleur"  style="width:90%">
+            <input type="text"  name="color"  id="couleur"  style="width:90%"  required>
             <br><br>
 
             <label for="extension"> Extension de la photo : </label> <br>
-            <input type="text"  name="ext"  id="extension"  style="width:90%">
+            <input type="text"  name="ext"  id="extension"  style="width:90%"  required>
             <br><br>
 
             <label for="ajout"> Date d'ajout : </label> <br>
-            <input type="text"  name="add"  id="ajout"  style="width:90%">
+            <input type="text"  name="add"  id="ajout"   value="year-month-day"  style="width:90%"  required>
             <br><br>
 
             <label for="modification"> Date de modification : </label> <br>
-            <input type="date"  name="modif"  id="modification"  style="width:90%">
+            <input type="date"  name="modif"  id="modification"  style="width:90%"  required>
             <br><br>
 
             <label for="bloque"> Produit bloqué ? : </label> <br>
-            <input type="radio"  name="bloq"  id="bloque"> Oui
+            <input type="radio"  name="bloq"  id="bloque"  checked> Oui
             <input type="radio"  name="bloq"  id="bloque"> Non
             <br><br>
 
-             <!-- Les boutons AJOUTER et ANNULER -->
-             <div style="margin: 20px 0 30px 150px">
-                <!-- Pour voir le code de la fonction "verif" regardez tout en bas de la page -->
-                <input type="submit"  value="Ajouter"  onclick="verif()"  style="margin-left:50px; padding:10px 40px; border-radius:10px; background-color:green; color:white"> 
-            
-                <a href="index.php"> 
-                    <button style="margin-left:100px; padding:10px 30px; border-radius:10px; background-color:red; color:white"> ANNULER </button> 
-                </a> 
-            </div>
-    
+             <!-- Bouton AJOUTER  -->
+
+            <!-- Pour voir le code de la fonction "verif" regardez tout en bas de la page -->
+            <input type="submit"  value="Ajouter"  onclick="verif()"  
+            style="float:left; margin-left:200px; padding:10px 40px; border-radius:10px; background-color:green; color:white"> 
         </form>
+
+
+        <!-- Bouton ANNULER -->
+        <a href="index.php"> 
+            <button style="margin-left:100px; padding:10px 30px; border-radius:10px; background-color:red; color:white"> ANNULER </button> 
+        </a> 
+
     </div>
+
 
 
     <!-- PAGE FOOT -->
     <?php
-            include("footer.php")
-        ?>      
+        include("footer.php")
+    ?>      
 
 
 
