@@ -20,7 +20,7 @@
                 <!-- Logo Jarditou -->
                 <div class="row">
                     <div class="col-3 p-3 d-none d-sm-none d-md-block">  
-                        <img src="public/images/jarditou_logo.jpg" class="img-fluid" alt="logo">
+                        <img src="public/image/jarditou_logo.jpg" class="img-fluid" alt="logo">
                     </div>
                     <div class="col-9 d-none d-sm-none d-md-block">  
                         <h1 class="text-right px-5 py-3"> <b>La qualité depuis 70 ans</b> </h1>
@@ -50,7 +50,7 @@
                 <!-- Image "Promotion sr lames de terrase" -->
                 <div class="row"  style="margin:20px 0 20px 0">
                     <div class="col-12">
-                        <img src="public/images/promotion.jpg" class="img-fluid w-100" alt="promotion">
+                        <img src="public/image/promotion.jpg" class="img-fluid w-100" alt="promotion">
                     </div>
                 </div>
             </header>

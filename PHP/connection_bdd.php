@@ -7,9 +7,9 @@ if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
     {
         // Paramètres de connexion serveur distant
         $host = "localhost";
-        $login= "login dev amorce donné par votre formateur";     // Votre loggin d'accès au serveur de BDD 
-        $password="password dev amorce donné par votre formateur";    // Le Password pour vous identifier auprès du serveur
-        $base = "sur dev amorce BDD vaut votre login dev amorce donné par votre formateur ";    // La BDD avec laquelle vous voulez travailler 
+        $login= "mnijat";     // Votre login d'accès au serveur de BDD 
+        $password="mn20114";    // Le Password pour vous identifier auprès du serveur
+        $base = "mnijat";    // La BDD avec laquelle vous voulez travailler 
     }
 
     // ici un 'OU' car il se peut que le 'localhost' ne soit pas reconnu !
