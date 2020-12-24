@@ -55,11 +55,11 @@
             <br><br>
 
             <label for="reference"> Réference : </label> <br>
-            <input type="text"  name="ref"  id="reference"  value=<?php echo $row->pro_ref?>  style="width:90%">
+            <input type="text"  name="ref"  id="reference"  value=<?php echo $row->pro_ref?>  style="width:90%"  required>
             <br><br>
                 
             <label for="libelle"> Libellé : </label> <br>
-            <input type="text"  name="lib"  id="libelle"  value=<?php echo $row->pro_libelle?>  style="width:90%">
+            <input type="text"  name="lib"  id="libelle"  value=<?php echo $row->pro_libelle?>  style="width:90%"  required>
             <br><br>
 
             <label for="description"> Description : </label> <br>
@@ -67,19 +67,19 @@
             <br><br>
 
             <label for="prix"> Prix : </label> <br>
-            <input type="text"  name="price"  id="prix"  value=<?php echo $row->pro_prix?>  style="width:90%">
+            <input type="text"  name="price"  id="prix"  value=<?php echo $row->pro_prix?>  style="width:90%"  required>
             <br><br>
 
             <label for="stock_produit"> Stock : </label> <br>
-            <input type="text"  name="stock"  id="stock_produit"  value=<?php echo $row->pro_stock?>  style="width:90%">
+            <input type="text"  name="stock"  id="stock_produit"  value=<?php echo $row->pro_stock?>  style="width:90%"  required>
             <br><br>
 
             <label for="couleur"> Couleur : </label> <br>
-            <input type="text"  name="color"  id="couleur"  value=<?php echo $row->pro_couleur?>  style="width:90%">
+            <input type="text"  name="color"  id="couleur"  value=<?php echo $row->pro_couleur?>  style="width:90%"  required>
             <br><br>
 
             <label for="extension"> Extension de la photo : </label> <br>
-            <input type="text"  name="ext"  id="extension"  value=<?php echo $row->pro_photo?>  style="width:90%">
+            <input type="text"  name="ext"  id="extension"  value=<?php echo $row->pro_photo?>  style="width:90%"  required>
             <br><br>
 
             <label for="bloque"> Produit bloqué ? : </label> <br>
@@ -97,7 +97,7 @@
 
 
             <label for="categorie"> Catégorie : </label> <br>
-                <select id="categorie"  name="cat"  style="width:90%"> 
+                <select id="categorie"  name="cat"  style="width:90%"  required> 
                         <!-- Code PHP -->
                         <?php
                         //Connéxion à la base de données 
