@@ -15,8 +15,16 @@
 
     <!-- PAGE HEAD -->
     <?php
-    include("header.php")
+        if (file_exists("header.php"))
+        {
+            include("header.php");
+        }
+        else
+        {
+            echo "file 'header.php' n'existe pas";
+        }
     ?>
+
 
     <!-- PAGE MAIN CONTENT -->
     <!-- Vos coordonnées -->

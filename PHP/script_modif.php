@@ -1,4 +1,3 @@
-
 <?php 
 
 // Dans ce fichier, nous récupérons les informations passées dans le fichier "modif.php" dans la balise <form> et 
@@ -6,19 +5,19 @@
 
 // Les informations sont récupéré avec variable superglobale $_POST pour réaliser la requête de modification: UPDATE
 
-$pro_id = $_POST['id'];
-$pro_ref = $_POST['ref'];
-$pro_cat_id = $_POST['cat'];
-$pro_libelle = $_POST['lib'];
-$pro_description = $_POST['desc'];
-$pro_prix = $_POST['price'];
-$pro_stock = $_POST['stock'];
-$pro_couleur = $_POST['color'];
-$pro_photo = $_POST['ext'];
-$pro_bloque = $_POST['bloq'];
+$pro_id = htmlspecialchars($_POST['id']);   // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
+$pro_ref = htmlspecialchars($_POST['ref']);
+$pro_cat_id = htmlspecialchars($_POST['cat']);
+$pro_libelle = htmlspecialchars($_POST['lib']);
+$pro_description = htmlspecialchars($_POST['desc']);
+$pro_prix = htmlspecialchars($_POST['price']);
+$pro_stock = htmlspecialchars($_POST['stock']);
+$pro_couleur = htmlspecialchars($_POST['color']);
+$pro_photo = htmlspecialchars($_POST['ext']);
+$pro_bloque = htmlspecialchars($_POST['bloq']);
 
 
-// IMPORTANT : Si il y erreur de "Undefined index" au lieu d'écrire  $pro_id = $_POST['id']; on peut écrire comme suite par exemple:
+// IMPORTANT : Si il y a erreur de "Undefined index" au lieu d'écrire  $pro_id = $_POST['id']; on peut écrire comme suite par exemple:
 
 // if (isset($_POST['id'])) 
 // {

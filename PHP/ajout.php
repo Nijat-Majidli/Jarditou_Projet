@@ -16,7 +16,14 @@
     
     <!-- PAGE HEAD -->
     <?php
-        include("header.php")
+        if (file_exists("header.php"))
+        {
+            include("header.php");
+        }
+        else
+        {
+            echo "file 'header.php' n'existe pas";
+        }
     ?>
 
 
@@ -107,10 +114,8 @@
             <br><br>
 
              <!-- Bouton AJOUTER  -->
-
             <!-- Pour voir le code de la fonction "verif" regardez tout en bas de la page -->
-            <input type="submit"  value="Ajouter"  onclick="verif()"  
-            style="float:left; margin-left:200px; padding:10px 40px; border-radius:10px; background-color:green; color:white"> 
+            <input type="submit"  value="Ajouter"  onclick="verif()"  style="float:left; margin-left:200px; padding:10px 40px; border-radius:10px; background-color:green; color:white"> 
         </form>
 
 

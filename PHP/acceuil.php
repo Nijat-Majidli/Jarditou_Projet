@@ -15,7 +15,14 @@
 
      <!-- PAGE HEAD -->
      <?php
-        include("header.php")
+        if (file_exists("header.php"))
+        {
+            include("header.php");
+        }
+        else
+        {
+            echo "file 'header.php' n'existe pas";
+        }
     ?>
 
 
@@ -43,6 +50,17 @@
             <!-- COLONNE DROITE -->
             <div class="col-12 col-lg-4 bg-warning" style="margin-top: 20px;">
                 <aside class="h2 p-4"> [Colonne de droite] </aside>
+            </div>
+
+
+            <!--  Les boutons  INSCRIPTION  et  LOGIN  -->
+            <div style="margin: 20px 0 20px 200px">
+                <a href="inscription.php"> 
+                    <button style="margin-left:100px; padding:10px 25px; border-radius:10px; background-color:grey; color:white"> Inscription </button> 
+                </a> 
+                <a href="login.php"> 
+                    <button style="margin-left:100px; padding:10px 43px; border-radius:10px; background-color:green; color:white"> Login </button> 
+                </a> 
             </div>
         </div>
     </div>

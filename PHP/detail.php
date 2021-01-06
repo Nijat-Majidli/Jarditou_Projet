@@ -16,7 +16,14 @@
 
     <!-- PAGE HEAD -->
     <?php
-        include("header.php")
+        if (file_exists("header.php"))
+        {
+            include("header.php");
+        }
+        else
+        {
+            echo "file 'header.php' n'existe pas";
+        }
     ?>
 
 
@@ -96,7 +103,7 @@
 
 
         <!--  Les boutons  RETOUR,  MODIFIER  et  SUPPRIMER  -->
-        <div style="margin-bottom:20px">
+        <div style="margin: 20px 0 20px 200px">
             <a href="index.php"> 
                 <button style="margin-left:100px; padding:10px 40px; border-radius:10px; background-color:grey; color:white"> Retour </button> 
             </a> 

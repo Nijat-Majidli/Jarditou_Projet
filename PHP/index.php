@@ -14,10 +14,17 @@
     </head>
 
 
-    <!-- PAGE HEAD -->
-    <?php
-        include("header.php")
-    ?>
+<!-- PAGE HEAD -->
+<?php
+    if (file_exists("header.php"))
+    {
+        include("header.php");
+    }
+    else
+    {
+        echo "file 'header.php' n'existe pas";
+    }
+?>
 
 
     <!-- PAGE MAIN CONTENT -->
@@ -44,93 +51,97 @@
                     </tr>
                 </thead>
                 <tbody>         
-                    <!-- Code PHP -->
-                    <?php
-                        //Connéxion à la base de données 
-                        require "connection_bdd.php";
-                        
-                        //Sélectionne toutes les informations de la table 'produits'
-                        $requete = "SELECT * FROM produits";
+                <!-- Code PHP -->
+<?php
+                //Connéxion à la base de données 
+                require "connection_bdd.php";
+                
+                //Sélectionne toutes les informations de la table 'produits'
+                $requete = "SELECT * FROM produits";
 
-                        // Exécution de notre requête via la méthode "query()" qui retourne un jeu de résultats en tant qu'objet PDO Statement  
-                        // et on met ce résultat dans une variable  $result
-                        $result = $db->query($requete);
+                // Exécution de notre requête via la méthode "query()" et on met le résultat retourné dans une variable  $result
+                $result = $db->query($requete);
 
-                        // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
-                        $nbLigne = $result->rowCount(); 
-                        if($nbLigne > 1)
-                        {
-                            while ($row = $result->fetch(PDO::FETCH_OBJ))
-                            { ?>
-                                <tr>
-                                    <td class="table-warning" style="width: 150px">
-                                        <div>
-                                            <img src="<?php echo "public/image/"; echo $row->pro_id; echo "."; echo $row->pro_photo ?>"  alt="imgproduit"  class="img-fluid">
-                                        </div>
-                                    </td> 
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_id; ?>  
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_ref; ?>
-                                        </div>
-                                    </td>
-                                    <td class="table-warning"> 
-                                        <div>  
-                                            <a href="detail.php?pro_id=<?php echo $row->pro_id ?>">  <?php echo $row->pro_libelle; ?>  </a>
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_prix; ?>
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_stock; ?>
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_couleur; ?>
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_d_ajout; ?>
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_d_modif; ?>
-                                        </div>
-                                    </td>
-                                    <td> 
-                                        <div> 
-                                            <?php  echo $row->pro_bloque; ?>
-                                        </div>
-                                    </td>
-                                </tr>
-                        <?php
-                            }
+                // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
+                $nbLigne = $result->rowCount(); 
+                
+                if($nbLigne > 1)
+                {
+                    while ($row = $result->fetch(PDO::FETCH_OBJ))  // Grace à méthode fetch() on choisit le 1er ligne de chaque colonne et la mets dans l'objet $row
+                    {                                              // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de chaque colonne et les mets dans l'objet $row
+?>
+                        <tr>
+                            <td class="table-warning"  style="width: 150px">
+                                <div>
+                                    <img  src="<?php echo "public/image/"; echo $row->pro_id; echo "."; echo $row->pro_photo ?>"  alt="imgproduit"  class="img-fluid">
+                                </div>
+                            </td> 
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_id; ?>  
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_ref; ?>
+                                </div>
+                            </td>
+                            <td class="table-warning"> 
+                                <div>  
+                                    <a href="detail.php?pro_id=<?php echo $row->pro_id ?>">  <?php echo $row->pro_libelle; ?>  </a>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_prix; ?>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_stock; ?>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_couleur; ?>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_d_ajout; ?>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_d_modif; ?>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_bloque; ?>
+                                </div>
+                            </td>
+                        </tr>
+<?php
+                    }
                     
-                            // sert à finir proprement une série de fetch(), libère la connection au serveur de BDD
-                            $result->closeCursor();
-                        }
-                        ?>    
+                    // Sert à finir proprement une série de fetch(), libère la connection au serveur de BDD
+                    $result->closeCursor();
+                }
+?>    
                 </tbody>
             </table>
         </div>
     </div>
 
 
-    <!-- PAGE FOOT -->
-    <?php
-        include("footer.php")
-    ?>
+
+<!-- PAGE FOOT -->
+<?php
+    include("footer.php")
+?>
+
+
 
 </html>
             

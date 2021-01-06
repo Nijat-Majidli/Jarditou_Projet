@@ -5,24 +5,20 @@
 
 // Les informations sont récupéré avec variable superglobale $_POST pour réaliser la requête de modification: INSERT
 
-// var_dump($_FILES);
+$pro_id = htmlspecialchars($_POST['id']);   // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
+$pro_ref = htmlspecialchars($_POST['ref']);
+$pro_cat_id = htmlspecialchars($_POST['cat']);
+$pro_libelle = htmlspecialchars($_POST['lib']);
+$pro_description = htmlspecialchars($_POST['desc']);
+$pro_prix = htmlspecialchars($_POST['price']);
+$pro_stock = htmlspecialchars($_POST['stock']);
+$pro_couleur = htmlspecialchars($_POST['color']);
+$pro_photo = htmlspecialchars($_POST['ext']);
+$pro_d_ajout = htmlspecialchars($_POST['add']);
+$pro_d_modif = htmlspecialchars($_POST['modif']);
+$pro_bloque = htmlspecialchars($_POST['bloq']);
 
-// $_FILES['fichier'];
-
-$pro_id = $_POST['id'];
-$pro_ref = $_POST['ref'];
-$pro_cat_id = $_POST['cat'];
-$pro_libelle = $_POST['lib'];
-$pro_description = $_POST['desc'];
-$pro_prix = $_POST['price'];
-$pro_stock = $_POST['stock'];
-$pro_couleur = $_POST['color'];
-$pro_photo = $_POST['ext'];
-$pro_d_ajout = $_POST['add'];
-$pro_d_modif = $_POST['modif'];
-$pro_bloque = $_POST['bloq'];
-
-// IMPORTANT : Si il y erreur de "Undefined index" au lieu d'écrire  $pro_id = $_POST['id']; on peut écrire comme suite par exemple:
+// IMPORTANT : Si il y a erreur de "Undefined index" au lieu d'écrire  $pro_id = $_POST['id']; on peut écrire comme suite par exemple:
 
 // if (isset($_POST['id'])) 
 // {
@@ -114,25 +110,3 @@ exit;
 
 ?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
-</html>
