@@ -45,6 +45,7 @@
                 </div>
             </form>
 
+
              <!--  Le bouton ANNULER  -->
             <a href="acceuil.php"> 
                 <button style="margin-left:50px; padding:10px 33px; border-radius:10px; background-color:red; color:white"> Annuler </button> 

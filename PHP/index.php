@@ -65,7 +65,7 @@
                 // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
                 $nbLigne = $result->rowCount(); 
                 
-                if($nbLigne > 1)
+                if($nbLigne >= 1)
                 {
                     while ($row = $result->fetch(PDO::FETCH_OBJ))  // Grace à méthode fetch() on choisit le 1er ligne de chaque colonne et la mets dans l'objet $row
                     {                                              // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de chaque colonne et les mets dans l'objet $row

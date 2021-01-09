@@ -26,10 +26,11 @@ if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
     try
     {    
         //Instanciation de la connexion à la base de données   
-        $db = new PDO('mysql:host='.$host.'; charset=utf8; dbname='.$base.'', $login, $password);
+        $db = new PDO('mysql:host='.$host.';  charset=utf8;  dbname='.$base.'',  $login, $password);
 
         // Configure des attributs PDO au gestionnaire de base de données
         // Ici nous configurons l'attribut ATTR_ERRORMODE en lui donnant la valeur ERRMODE_EXCEPTION
+        // Ca sert à afficher des détails sur l'erreur avec un message beaucoup plus clair:
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -37,11 +38,10 @@ if ($_SERVER["SERVER_NAME"] == "dev.amorce.org")
     //Si échec de la connexion (du try), on attrape l'exception avec catch
    catch (Exception $e) 
    {
-        // On affiche le message et le code de l'erreur
         echo "La connection à la base e données a échoué ! <br>";
         echo "Merci de bien vérifier vos paramètres de connection ...<br>";
-        echo "Erreur : " . $e->getMessage() . "<br>";
-        echo "N° : " . $e->getCode(). "<br>";
+        echo "Erreur : " . $e->getMessage() . "<br>";   // On affiche le message de l'erreur
+        echo "N° : " . $e->getCode(). "<br>";           // On affiche le code de l'erreur
         die("Fin du script");
         //Le script s'arrête ici.
    } 

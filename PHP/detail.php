@@ -1,3 +1,23 @@
+<?php 
+    session_start();  // il est impératif d'utiliser la fonction session_start() au début de chaque fichier PHP dans 
+                      // lequel on manipulera cette variable et avant tout envoi de requêtes HTTP, c'est-à-dire avant tout 
+                      // echo ou quoi que ce soit d'autre : rien ne doit avoir encore été écrit/envoyé à la page web.
+
+
+    if (isset($_SESSION['login']))
+    {
+        echo 'Bonjour '. $_SESSION['login'] ;
+    }
+    else
+    {
+        echo "Cette page nécessite une identification";
+        header("refresh:2; url=login.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page login.php. 
+        exit;
+    }
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
     <head>
