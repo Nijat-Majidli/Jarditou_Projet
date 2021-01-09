@@ -10,7 +10,7 @@
     }
     else
     {
-        echo "Cette page nécessite une identification";
+        echo "<h4> Cette page nécessite une identification </h4>";
         header("refresh:2; url=login.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page login.php. 
         exit;
     }
@@ -157,18 +157,25 @@
                 </select>
             <br><br>
             
-
-            <!-- Les boutons RETOUR et ENREGISTRER -->
-            <div style="margin:20px 0 20px  200px">
-                <a href="index.php"> 
-                <button style="margin-left:100px; padding:10px 40px; border-radius:10px; background-color:grey; color:white"> Retour </button> 
-                </a> 
-
+            <!-- Le bouton ENREGISTRER -->
+            <div style="margin:20px 0 20px  150px">
                 <!-- Pour voir le code de la fonction "verif" regardez tout en bas de la page -->
-                <input type="submit"  value="Enregistrer"  onclick="verif()"  style="margin-left:50px; padding:10px 25px; border-radius:10px; background-color:green; color:white"> 
+                <input type="submit"  value="Enregistrer"  onclick="verif()"  style="float:left; margin-left:50px; padding:10px 15px; border-radius:10px; background-color:green; color:white"> 
             </div>
     
         </form>
+
+
+        <!-- Les boutons RETOUR et DECONNEXION -->
+        <div style="margin:20px 0 20px  200px">
+            <a href="index.php"> 
+                <button style="margin-left:50px; padding:10px 30px; border-radius:10px; background-color:grey; color:white"> Retour </button> 
+            </a> 
+
+            <a href="script_deconnexion.php"> 
+                <button style="margin-left:50px; padding:10px 10px; border-radius:10px; background-color:blue; color:white"> Déconnexion </button> 
+            </a> 
+        </div>
     </div>
 
 

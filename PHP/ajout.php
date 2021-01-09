@@ -10,7 +10,7 @@
     }
     else
     {
-        echo "Cette page nécessite une identification";
+        echo "<h4> Cette page nécessite une identification </h4>";
         header("refresh:2; url=login.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page login.php. 
         exit;
     }
@@ -136,13 +136,19 @@
 
              <!-- Bouton AJOUTER  -->
             <!-- Pour voir le code de la fonction "verif" regardez tout en bas de la page -->
-            <input type="submit"  value="Ajouter"  onclick="verif()"  style="float:left; margin-left:200px; padding:10px 40px; border-radius:10px; background-color:green; color:white"> 
+            <div style="margin:20px 0 20px  150px">
+                <input type="submit"  value="Ajouter"  onclick="verif()"  style="float:left; margin-left:100px; padding:10px 30px; border-radius:10px; background-color:green; color:white"> 
+            </div>
         </form>
 
 
-        <!-- Bouton ANNULER -->
+        <!-- Les boutons ANNULER et DECONNEXION -->
         <a href="index.php"> 
-            <button style="margin-left:100px; padding:10px 30px; border-radius:10px; background-color:red; color:white"> ANNULER </button> 
+            <button style="margin-left:50px; padding:10px 30px; border-radius:10px; background-color:red; color:white"> Annuler </button> 
+        </a> 
+
+        <a href="script_deconnexion.php"> 
+                <button style="margin-left:50px; padding:10px 10px; border-radius:10px; background-color:blue; color:white"> Déconnexion </button> 
         </a> 
 
     </div>

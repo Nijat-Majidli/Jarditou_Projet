@@ -10,7 +10,7 @@
     }
     else
     {
-        echo "Cette page nécessite une identification";
+        echo "<h4> Cette page nécessite une identification </h4>";
         header("refresh:2; url=login.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page login.php. 
         exit;
     }
@@ -122,19 +122,23 @@
         </form>
 
 
-        <!--  Les boutons  RETOUR,  MODIFIER  et  SUPPRIMER  -->
+        <!--  Les boutons  RETOUR,  MODIFIER, SUPPRIMER et DECONNEXION  -->
         <div style="margin: 20px 0 20px 200px">
             <a href="index.php"> 
-                <button style="margin-left:100px; padding:10px 40px; border-radius:10px; background-color:grey; color:white"> Retour </button> 
+                <button style="margin-left:40px; padding:10px 30px; border-radius:10px; background-color:grey; color:white"> Retour </button> 
             </a> 
             
             <a href="modif.php?pro_id=<?php echo $row->pro_id ?>"> 
-                <button style="margin-left:50px; padding:10px 30px; border-radius:10px; background-color:orange; color:0000"> Modifier </button> 
+                <button style="margin-left:50px; padding:10px 20px; border-radius:10px; background-color:orange; color:0000"> Modifier </button> 
             </a>
             
             <!-- Pour voir le code de la fonction "Suppression" regardez tout en bas de la page -->
             <a href="delete.php?pro_id=<?php echo $row->pro_id ?>">  
-                <button style="margin-left:50px; padding:10px 25px; border-radius:10px; background-color:red; color:white"> Supprimer </button> 
+                <button style="margin-left:50px; padding:10px 15px; border-radius:10px; background-color:red; color:white"> Supprimer </button> 
+            </a> 
+
+            <a href="script_deconnexion.php"> 
+                <button style="margin-left:50px; padding:10px 5px; border-radius:10px; background-color:blue; color:white"> Déconnexion </button> 
             </a> 
         </div>
     </div>

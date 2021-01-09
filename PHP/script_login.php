@@ -2,7 +2,7 @@
     
     // On va enregistrer l'heure de dernier connexion du client. Pour obtenir la bonne heure, il faut configurer la valeur 
     // de l'option datetime_zone sur la valeur Europe/Paris.
-    // Donc, il faut ajouter l'instruction date_default_timezone_set("Europe/Paris"); dans vos scripts avant toute manipulation de dates. 
+    // Donc, il faut ajouter l'instruction date_default_timezone_set("Europe/Paris") dans vos scripts avant toute manipulation de dates :
     date_default_timezone_set('Europe/Paris');
 
 
@@ -39,13 +39,11 @@
     require "connection_bdd.php";
 
 
-    // Vérification N°1 :  Si l'utilisateur est bloqué ou non ?
-    // $requete = $db->prepare('SELECT user_bloque FROM users WHERE user_bloque=:user_login');
+    // Vérification N°1 :  Est-ce que l'utilisateur est bloqué ou non ?
+    // Pour cette partie il faut écrire le code !
 
 
-
-
-    // Vérification N°2 : Si le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
+    // Vérification N°2 : Est-ce que le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
     // D'abord on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.
     // Pour cela, on fait préparation de la requête SELECT avec la fonction prepare(): 
     $requete = $db->prepare('SELECT user_mdp FROM users WHERE user_login = :user_login');
@@ -55,19 +53,15 @@
         'user_login' => $user_login
     ));
     
-    // $resultat est un array qui contient user_mdp
+    // $resultat est un array associatif qui contient user_mdp et sa valeur
     $resultat = $requete->fetch();  
 
-    // Pour vérifier si un mot de passe saisi est bien celui enregistré en base, il faut utiliser la fonction password_verify() :
+    // Pour vérifier si un mot de passe saisi est bien celui enregistré en base, il faut utiliser la fonction password_verify() qui 
+    // renvoie True ou False :
     $PasswordCorrect = password_verify($_POST['mdp'], $resultat['user_mdp']);   
 
     if ($PasswordCorrect)
     {
-        session_start();
-        
-        $_SESSION['login'] = $user_login;
-        echo '<h4>  Salut ' . $_SESSION['login'] . '<br> Vous êtes connecté ! </h4>';
-        
         //Construction de la requête UPDATE:
         $requete = $db->prepare("UPDATE users SET user_connexion=:user_connexion WHERE user_login=:user_login");
 
@@ -80,6 +74,12 @@
 
         // Exécution de la requête
         $requete->execute(); 
+
+        // Création d'une session :
+        session_start();
+        
+        $_SESSION['login'] = $user_login;
+        echo '<h4>  Bonjour ' . $_SESSION['login'] . '<br> Vous êtes connecté ! </h4>';
     }
     else
     {
@@ -95,5 +95,13 @@
 
     $requete->closeCursor();
 
+    header("refresh:2; url=index.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page index.php.
+    exit;
+
+
+    
 
 ?>
+
+
+
