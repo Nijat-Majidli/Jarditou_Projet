@@ -4,14 +4,14 @@
                       // echo ou quoi que ce soit d'autre : rien ne doit avoir encore été écrit/envoyé à la page web.
 
 
-    if (isset($_SESSION['login']))
+    if (isset($_SESSION['role']) && $_SESSION['role']=='admin')
     {
-        echo 'Bonjour '. $_SESSION['login'] ;
+        echo 'Bonjour '. $_SESSION['role'] ." ". $_SESSION['login'] ;
     }
     else
     {
-        echo "<h4> Cette page nécessite une identification </h4>";
-        header("refresh:2; url=login.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page login.php. 
+        echo "<h4> Cette page est un espace d'administration </h4>";
+        header("refresh:2; url=index.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page index.php. 
         exit;
     }
 ?>

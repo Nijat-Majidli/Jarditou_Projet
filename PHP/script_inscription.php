@@ -53,8 +53,9 @@
     // Ensuite on construit la requête SELECT pour aller chercher les colonnes user_email et user_login qui se trouvent dans table "users" :
     $req = "SELECT user_email, user_login FROM users" ;
     
-    // Grace à méthode query() on exécute notre requête et on ramene la colonne user_email et et user_login et on les mets dans l'objet $result :
-    $result = $db->query($req);   // On peut également écrire :  $result = $db->query("SELECT user_email, user_login FROM users")
+    // Grace à méthode query() on exécute notre requête et on ramene les colonnes user_email et et user_login et on les mets dans l'objet $result :
+    // On peut également écrire notre requête comme ça :  $result = $db->query("SELECT user_email, user_login FROM users")
+    $result = $db->query($req)  or  die(print_r($db->errorInfo()));    // Pour repérer l'erreur SQL en PHP on utilise le code die(print_r($db->errorInfo())) 
 
     // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
     $nbLigne = $result->rowCount(); 
@@ -63,13 +64,13 @@
     {
         while ($row = $result->fetch(PDO::FETCH_OBJ))    // Grace à la méthode fetch() on choisit 1er ligne de la colonne user_mail et user_login et on les mets dans l'objet $row                                            
         {                                                // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de la colonne user_mail et user_login et on les mets dans l'objet $row    
-            if ($row->user_email == $_POST['email'])
+            if ($row->user_email == $user_email)
             {
                 echo "<h4> Cette adresse mail déjà existe. Choisissez une autre! </h4>";
                 header("refresh:2; url=inscription.php");
                 exit;
             } 
-            if ($row->user_login == $_POST['login'])
+            if ($row->user_login == $user_login)
             {
                 echo "<h4> Ce login déjà existe. Choisissez une autre! </h4>";
                 header("refresh:2; url=inscription.php");
@@ -79,9 +80,10 @@
     }        
       
 
-    //Construction de la requête INSERT:
-    $requete = $db->prepare("INSERT INTO users (user_nom, user_prenom, user_email, user_login, user_mdp, user_inscription, user_connexion, user_bloque) 
-    VALUES (:user_nom, :user_prenom, :user_email, :user_login, :user_mdp, :user_inscription, :user_connexion, :user_bloque)");
+    // Construction de la requête INSERT:
+    // On insere pas la valeurs pour la colonne "login_fail" car dans base de données on a bien défini que cette colonne accepte la valeur 0
+    $requete = $db->prepare("INSERT INTO users (user_nom, user_prenom, user_email, user_login, user_mdp, user_inscription, user_connexion, user_role) 
+    VALUES (:user_nom, :user_prenom, :user_email, :user_login, :user_mdp, :user_inscription, :user_connexion, :user_role)");
 
 
     if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", $user_email))  // Vérification la validité de format de l'adresse mail avec REGEX en utilisant la fonction preg_match() qui renvoie True or False:
@@ -93,12 +95,22 @@
         $requete->bindValue(':user_login', $user_login, PDO::PARAM_STR);
         $requete->bindValue(':user_mdp', $user_mdp, PDO::PARAM_STR);
     
-        $date = date("Y/m/d H:i:s");  // On utilise la fonction date() pour montrer la date d'inscription et l'heure du dernier connexion du client
-    
+        $time = new DateTime();   // On utilise l'objet DateTime() pour montrer la date d'inscription et l'heure du dernier connexion du client
+        $date = $time->format("Y/m/d H:i:s"); 
+
+
         $requete->bindValue(':user_inscription', $date, PDO::PARAM_STR);  
         $requete->bindValue(':user_connexion', $date, PDO::PARAM_STR);
-       
-        $requete->bindValue(':user_bloque', " ", PDO::PARAM_STR);
+        
+        if($user_login=="Nijat")
+        {
+            $requete->bindValue(':user_role', 'admin', PDO::PARAM_STR);
+        }
+        else
+        {
+            $requete->bindValue(':user_role', 'client', PDO::PARAM_STR);
+        }
+        
 
         // Exécution de la requête
         $requete->execute();
@@ -119,6 +131,8 @@
     }
     
 
+
+    
 ?>
 
 

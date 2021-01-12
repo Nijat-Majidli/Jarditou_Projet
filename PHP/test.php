@@ -2,18 +2,45 @@
 
     require "connection_bdd.php";
         
-    $req = 'SELECT user_mdp FROM users';
+    // $req = $db->prepare('SELECT user_blocked FROM users WHERE user_login = :user_login');
+
+    // $req->execute(array(':user_login' => 'Nijat'));
+    
+    // $reponse = $req->fetch();  
+
+    // var_dump($reponse);
+
         
-    $result = $db->query($req);
+    // echo time() + (1*1*60*60);
 
-    var_dump($result);
+    // $req = $db->query('SELECT user_unblock_time FROM users');
+    
+    // $reponse = $req->fetch();
 
-    $nbLigne = $result->rowCount();   
+    // echo $reponse['user_unblock_time'];
 
-    while($row = $result->fetch(PDO::FETCH_OBJ))  
-    {
-        var_dump($row);
-    }
+
+    echo time();
+    
+    echo '<br>';
+
+    $unblock_time = time() + (1*1*3*60);
+    
+    echo $unblock_time;
+
+
+    
+    
+
+    // var_dump($reponse);
+
+
+    // $nbLigne = $result->rowCount();   
+
+    // while($row = $result->fetch(PDO::FETCH_OBJ))  
+    // {
+    //     var_dump($row);
+    // }
 
     
    

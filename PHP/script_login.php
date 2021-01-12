@@ -13,7 +13,7 @@
     {
         if (!empty($_POST['login'] && $_POST['mdp']))
         {
-            $user_login = htmlspecialchars($_POST['login']);    // La fonction "htmlspecialchars" rend inoffensives les balises HTML que le visiteur a pu rentrer et nous aide d'éviter la faille XSS  
+            $user_login = htmlspecialchars($_POST['login']);  // La fonction "htmlspecialchars" rend inoffensives les balises HTML que le visiteur a pu rentrer et nous aide d'éviter la faille XSS  
             $user_mdp = htmlspecialchars($_POST['mdp']);
         }
         else
@@ -31,42 +31,32 @@
     }
         
 
-    // Puis on fait 2 type de vérification:
-    // 1. Vérification si login de l'utilisateur est bloqué ou non ?
-    // 2. Vérification si le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
-    
-    // D'abord on va se connecter à la base de données: 
-    require "connection_bdd.php";
 
-
-    // Vérification N°1 :  Est-ce que l'utilisateur est bloqué ou non ?
-    // Pour cette partie il faut écrire le code !
-
-
-    // Vérification N°2 : Est-ce que le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
+    // Vérification : Est-ce que le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
     // D'abord on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.
-    // Pour cela, on fait préparation de la requête SELECT avec la fonction prepare(): 
-    $requete = $db->prepare('SELECT user_mdp FROM users WHERE user_login = :user_login');
+    // Pour cela, on va se connecter à la base de données: 
+    require "connection_bdd.php";
+    
+    // Puis on fait préparation de la requête SELECT avec la fonction prepare(): 
+    $requete = $db->prepare('SELECT user_mdp, user_blocked FROM users WHERE user_login = :user_login');
 
     // Execution de requête:
-    $requete->execute(array(
-        'user_login' => $user_login
-    ));
+    $requete->execute(array(':user_login' => $user_login));
     
-    // $resultat est un array associatif qui contient user_mdp et sa valeur
+    // $resultat est un array associatif qui contient: 1. user_mdp et sa  valeur;  2. user_blocked et sa valeur
     $resultat = $requete->fetch();  
 
-    // Pour vérifier si un mot de passe saisi est bien celui enregistré en base, il faut utiliser la fonction password_verify() qui 
-    // renvoie True ou False :
-    $PasswordCorrect = password_verify($_POST['mdp'], $resultat['user_mdp']);   
+    // Pour vérifier si un mot de passe saisi est bien celui enregistré en base, on utilise la fonction password_verify() qui renvoie True ou False :
+    $PasswordCorrect = password_verify($user_mdp, $resultat['user_mdp']);   
 
-    if ($PasswordCorrect)
+    if ($PasswordCorrect && empty($resultat['user_blocked']))
     {
         //Construction de la requête UPDATE:
         $requete = $db->prepare("UPDATE users SET user_connexion=:user_connexion WHERE user_login=:user_login");
 
-        // On utilise la fonction date() pour montrer la date et l'heure du dernier connexion du client: 
-        $date = date("Y/m/d H:i:s");  
+        // On utilise l'objet DateTime() pour montrer la date et l'heure du dernier connexion du client: 
+        $time = new DateTime();  
+        $date = $time->format("Y/m/d H:i:s"); 
         
         // Association des valeurs aux marqueurs via méthode "bindValue()"
         $requete->bindValue(':user_connexion', $date, PDO::PARAM_STR);
@@ -79,17 +69,99 @@
         session_start();
         
         $_SESSION['login'] = $user_login;
-        echo '<h4>  Bonjour ' . $_SESSION['login'] . '<br> Vous êtes connecté ! </h4>';
-    }
-    else
-    {
-        echo "<h4> Mauvais identifiant ou mot de passe ! </h4>";
-        header("refresh:2; url=login.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page login.php.
-        exit;
+
+        $requete = $db->prepare('SELECT user_role FROM users WHERE user_login=:user_login');
+        $requete->execute(array(':user_login' => $user_login));
+        $resultat = $requete->fetch();  
         
-        //  Si l'utilisateur 3 fois ne saisit pas son mot de passe correctement on peut le bloquer.
-        // Pour cela ici on peut apeller la fonction Verify() qui se trouve dans la fichier "function.php" 
-        // Avant d'appeler la fonction Verify() on doit écrire le code :  require('function.php')
+        if($resultat['user_role']=='admin')
+        {
+            $_SESSION['role'] = "admin";
+        }
+        else
+        {
+            $_SESSION['role'] = "client";
+        }
+
+        echo '<h4>  Bonjour ' . $_SESSION['role'] ." ". $_SESSION['login'] . '<br> Vous êtes connecté ! </h4>';
+    }
+
+    else 
+    {
+        $requete = $db->prepare('SELECT login_fail, user_blocked, unblock_time FROM users WHERE user_login=:user_login');
+        
+        // Association des valeurs aux marqueurs via méthode "bindValue()"
+        $requete->bindValue(':user_login', $user_login, PDO::PARAM_STR);
+
+        // Exécution de la requête
+        $requete->execute(); 
+        
+        // $resultat est un array associatif qui contient login_fail et sa valeur:
+        $resultat = $requete->fetch();  
+
+        // On augmente le nombre de login_fail à chaque fois que l'utilisateur rate s'identifier :
+        $login_fail = $resultat['login_fail'] + 1;  
+        
+        // Ensuite on enregistre nouveau chiffre de login_fail dans la base de donnée: 
+        $requete = $db->prepare('UPDATE users SET login_fail=:login_fail WHERE user_login=:user_login');
+
+        if($login_fail < 4)   // Si l'utilisateur 3 fois ne saisit pas son mot de passe correctement on le bloque.
+        {
+            // Association des valeurs aux marqueurs via méthode "bindValue()"
+            $requete->bindValue(':login_fail', $login_fail, PDO::PARAM_INT);
+            $requete->bindValue(':user_login', $user_login, PDO::PARAM_STR);
+            
+            // Exécution de la requête
+            $requete->execute(); 
+           
+            echo "<h4> Mauvais identifiant ou mot de passe ! </h4>";
+            header("refresh:2; url=login.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page login.php.
+            exit;
+        }
+
+        if(empty($resultat['user_blocked']))
+        {
+            $requete = $db->prepare('UPDATE users SET user_blocked=:user_blocked, unblock_time=:unblock_time WHERE user_login=:user_login');
+            
+            // Association des valeurs aux marqueurs via méthode "bindValue()"
+            $unblock_time = time() + (1*1*2*60);
+
+            $requete->bindValue(':user_blocked', $user_login, PDO::PARAM_STR);
+            $requete->bindValue(':unblock_time', $unblock_time, PDO::PARAM_INT);
+            $requete->bindValue(':user_login', $user_login, PDO::PARAM_STR);
+
+            // Exécution de la requête
+            $requete->execute(); 
+
+            echo "<h4> Vous êtes bloqué pour 2 minutes! </h4>";
+            header("refresh:2; url=login.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page login.php.
+            exit;
+        }
+
+        $current_time = time();
+
+        if($resultat['unblock_time'] < $current_time)
+        {
+            $requete = $db->prepare('UPDATE users SET login_fail=:login_fail, user_blocked=:user_blocked, unblock_time=:unblock_time WHERE user_login=:user_login');
+            
+            $requete->bindValue(':login_fail', 0, PDO::PARAM_INT);
+            $requete->bindValue(':user_blocked', null, PDO::PARAM_STR);
+            $requete->bindValue(':unblock_time', 0, PDO::PARAM_INT);
+            $requete->bindValue(':user_login', $user_login, PDO::PARAM_STR);
+            
+            $requete->execute();
+
+            echo "<h4> Maintenant vous êtes débloqué ! <br> Veuillez réessayer de vous connecter ! </h4>";
+            header("refresh:3; url=login.php");  // refresh:2 signifie que après  secondes l'utilisateur sera redirigé sur la page login.php.
+            exit;
+        }
+        else
+        {
+            echo "<h4> Vous êtes bloqué pour 2 minutes! </h4>";
+            header("refresh:2; url=login.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page login.php.
+            exit;
+        }
+        
     }  
     
 
