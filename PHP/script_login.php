@@ -51,7 +51,7 @@
 
     if ($PasswordCorrect && empty($resultat['user_blocked']))
     {
-        //Construction de la requête UPDATE:
+        //Construction de la requête UPDATE pour mettre à jour l'heure du dernier connexion de l'utilisateur:
         $requete = $db->prepare("UPDATE users SET user_connexion=:user_connexion WHERE user_login=:user_login");
 
         // On utilise l'objet DateTime() pour montrer la date et l'heure du dernier connexion du client: 
@@ -68,6 +68,7 @@
         // Création d'une session :
         session_start();
         
+        // On va créer 2 variable SESSION:  $_SESSION['login']  et  $_SESSION['role']
         $_SESSION['login'] = $user_login;
 
         $requete = $db->prepare('SELECT user_role FROM users WHERE user_login=:user_login');
