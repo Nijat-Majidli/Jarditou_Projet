@@ -11,7 +11,7 @@
     else
     {
         echo "<h4> Cette page nécessite une identification </h4>";
-        header("refresh:2; url=login.php");  // refresh:2 signifie que après 5 secondes l'utilisateur sera redirigé sur la page login.php. 
+        header("refresh:2; url=login.php");  // refresh:2 signifie que après 2 secondes l'utilisateur sera redirigé sur la page login.php. 
         exit;
     }
 ?>
@@ -34,7 +34,7 @@
     </head>
 
 
-<!-- PAGE HEAD -->
+    <!-- PAGE HEAD -->
 <?php
     if (file_exists("header.php"))
     {
@@ -42,7 +42,7 @@
     }
     else
     {
-        echo "file 'header.php' n'existe pas";
+        echo "fichier 'header.php' n'existe pas";
     }
 ?>
 
@@ -84,9 +84,11 @@
                 $requete = "SELECT * FROM produits";
 
                 // Exécution de requête via la méthode "query()" et on met le résultat retourné dans une variable-objet $result
-                $result = $db->query($requete);    // On peut aussi écrire $result = $db->query("SELECT * FROM produits")
+                $result = $db->query($requete);    
+                
+                // On peut aussi écrire $result = $db->query("SELECT * FROM produits")
 
-                // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
+                // Grace à la méthode "rowCount()" on peut compter le nombre de lignes retournées par la requête
                 $nbLigne = $result->rowCount(); 
                 
                 if($nbLigne >= 1)

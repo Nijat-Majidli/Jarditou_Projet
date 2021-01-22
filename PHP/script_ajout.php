@@ -1,11 +1,10 @@
 <?php
 
-// Dans ce fichier, nous récupérons les informations passées dans le fichier "ajout.php" dans la balise <form> et 
-// l'attribut action="script_ajout.php" 
+// Dans ce fichier, nous récupérons les informations passées dans le fichier "ajout.php" dans la balise <form> et l'attribut action="script_ajout.php" 
 
-// Les informations sont récupéré avec variable superglobale $_POST pour réaliser la requête de modification: INSERT
+// Les informations sont récupéré avec variable superglobale $_POST pour réaliser la requête INSERT
 
-$pro_id = htmlspecialchars($_POST['id']);   // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
+$pro_id = htmlspecialchars($_POST['id']);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 $pro_ref = htmlspecialchars($_POST['ref']);
 $pro_cat_id = htmlspecialchars($_POST['cat']);
 $pro_libelle = htmlspecialchars($_POST['lib']);
@@ -35,7 +34,8 @@ $pro_bloque = htmlspecialchars($_POST['bloq']);
 
 // Le problème principal de l'upload d'un fichier est la sécurité. On doit tout d'abord vérifier 2 points basiques :
 // 1. Le fichier a-t-il bien été téléchargé ?
-// 2. Le type du fichier envoyé par l'utilisateur est-il celui attendu (image, document Word, PDF...) ?
+// 2. Le type du fichier envoyé par l'utilisateur est-il celui attendu (image, document Word, PDF etc...) ?
+
 // PHP fournit un extension nommée FILE_INFO qui fait référence en termes de sécurité. Voici comment l'utiliser, pour un type :
 // On met les types autorisés dans un tableau (ici pour une image):
 $aMimeTypes = array("image/gif", "image/jpeg", "image/pjpeg", "image/jpg", "image/png", "image/x-png", "image/tiff");
@@ -47,9 +47,12 @@ finfo_close($finfo);
 
 if (in_array($mimetype, $aMimeTypes))
 {
-    /* Le type est parmi ceux autorisés, donc OK, on va pouvoir 
-       déplacer et renommer le fichier */
-
+   // Le type est parmi ceux autorisés, donc OK, on va pouvoir déplacer et renommer le fichier.
+   // Par défaut, le fichier téléchargé est stocké dans le répertoire tmp (temporary) de notre serveur Wamp dans C:/wamp/tmp 
+   // Mais ce fichier devra se trouver dans un répertoire de notre projet, il faut donc le déplacer.
+   // Donc, via la méthode "move_uploded_file()" on va déplacer notre fichier image vers le répertoire "image" de notre projet et 
+   // au même temps on rénomme l'image en lui donnant le nom "$pro_id" (id de produit)  et l'extension du fichier "$pro_photo"      
+   move_uploaded_file($_FILES["fichier"]["tmp_name"], "public/image/$pro_id.$pro_photo");   
 } 
 else 
 {
@@ -58,15 +61,9 @@ else
    exit;
 }    
 
-// Par défaut, le fichier téléchargé est stocké dans le répertoire tmp (temporary) de notre serveur Wamp dans C:/wamp/tmp 
-// Mais ce fichier devra se trouver dans un répertoire de notre projet, il faut donc le déplacer.
-// Donc, via la méthode "move_uploded_file()" on va déplacer notre fichier image vers le répertoire "image" de notre projet et 
-// au même temps on rénomme l'image en lui donnant le nom "$pro_id" (id de produit)  et l'extension du fichier "$pro_photo"      
-move_uploaded_file($_FILES["fichier"]["tmp_name"], "public/image/$pro_id.$pro_photo");   
-
 
 // Dans votre projet, vous devez bien sûr remplacer photo.jpg par le nom de fichier souhaité, c'est-à-dire le pro_id et 
-// l'extesnion du fichier téléchargé. Le code suivant vous permettra d'obte,nir l'extension :
+// l'extesnion du fichier téléchargé. Le code suivant vous permettra d'obtenir l'extension :
 $extension = substr(strrchr($_FILES["fichier"]["name"], "."), 1);
 
 
@@ -90,8 +87,13 @@ $requete->bindValue(':pro_prix', doubleval($pro_prix), PDO::PARAM_STR);  //fonct
 $requete->bindValue(':pro_stock', $pro_stock, PDO::PARAM_INT);
 $requete->bindValue(':pro_couleur', $pro_couleur, PDO::PARAM_STR);
 $requete->bindValue(':pro_photo', $pro_photo, PDO::PARAM_STR);
-$requete->bindValue(':pro_d_ajout', $pro_d_ajout, PDO::PARAM_STR);
-$requete->bindValue(':pro_d_modif', $pro_d_modif, PDO::PARAM_STR);
+
+$time = new DateTime();   // On utilise l'objet DateTime() pour enregistrer la date et l'heure d'ajout ou modification du produit dans la base de données
+$date = $time->format("Y/m/d H:i:s"); 
+
+$requete->bindValue(':pro_d_ajout', $date, PDO::PARAM_STR);
+$requete->bindValue(':pro_d_modif', $date, PDO::PARAM_STR);
+
 $requete->bindValue(':pro_bloque', $pro_bloque, PDO::PARAM_INT);
 
 

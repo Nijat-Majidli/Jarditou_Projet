@@ -65,36 +65,37 @@
             <br><br>
 
             <label for="categorie"> Catégorie : </label> <br>
-                <select id="categorie"  name="cat"  style="width:90%"> 
-                        <!-- Code PHP -->
-                        <?php
-                        //Connéxion à la base de données 
-                        require "connection_bdd.php";
-                        
-                        //Sélectionne toutes les informations de la table 'categories'
-                        $requete = "SELECT * FROM categories";
-
-                        // Exécution de notre requête via la méthode "query()" qui retourne un jeu de résultats en tant qu'objet PDO Statement  
-                        // et on met ce résultat dans une variable  $result
-                        $result = $db->query($requete);
-
-                        // Grace à la méthode "rowCount()" nous pouvons connaitre le nombre de lignes retournées par la requête
-                        $nbLigne = $result->rowCount(); 
-                        if($nbLigne > 1)
-                        {
-                            while ($row = $result->fetch(PDO::FETCH_OBJ))
-                            { ?>
-                                <option  value="<?php echo $row->cat_id ?>"  required>  <?php echo $row->cat_nom ?>  </option> 
-                                <br>
-
-                        <?php
-                            }
+            <select id="categorie"  name="cat"  style="width:90%"> 
+                    <!-- Code PHP -->
+                    <?php
+                    //Connéxion à la base de données 
+                    require "connection_bdd.php";
                     
-                            // sert à finir proprement une série de fetch(), libère la connection au serveur de BDD
-                            $result->closeCursor();
+                    //Sélectionne toutes les informations de la table 'categories'
+                    $requete = "SELECT * FROM categories";
+
+                    // Exécution de notre requête via la méthode "query()" qui retourne un jeu de résultats en tant qu'objet PDO Statement  
+                    // et on met ce résultat dans une variable $result
+                    $result = $db->query($requete);
+
+                    // Grace à la méthode "rowCount()" on peut compter le nombre de lignes retournées par la requête
+                    $nbLigne = $result->rowCount(); 
+                    
+                    if($nbLigne > 1)
+                    {
+                        while ($row = $result->fetch(PDO::FETCH_OBJ))       // Grace à méthode fetch() on choisit le 1er ligne de chaque colonne et la mets dans l'objet $row
+                        {                                                   // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de chaque colonne et les mets dans l'objet $row
+                    ?>
+                            <option  value="<?php echo $row->cat_id ?>" required>  <?php echo $row->cat_nom ?>  </option> 
+                            <br>
+                    <?php
                         }
-                        ?>    
-                </select>
+                
+                        // sert à finir proprement une série de fetch(), libère la connection au serveur de BDD
+                        $result->closeCursor();
+                    }
+                    ?>    
+            </select>
             <br><br>
 
             <label for="libelle"> Libellé : </label> <br>
@@ -119,14 +120,6 @@
 
             <label for="extension"> Extension de la photo : </label> <br>
             <input type="text"  name="ext"  id="extension"  style="width:90%"  required>
-            <br><br>
-
-            <label for="ajout"> Date d'ajout : </label> <br>
-            <input type="text"  name="add"  id="ajout"  style="width:90%"  required>
-            <br><br>
-
-            <label for="modification"> Date de modification : </label> <br>
-            <input type="date"  name="modif"  id="modification"  style="width:90%"  required>
             <br><br>
 
             <label for="bloque"> Produit bloqué ? : </label> <br>

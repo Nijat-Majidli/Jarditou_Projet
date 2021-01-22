@@ -116,16 +116,16 @@
             <br><br>
 
             <label for="ajout"> Date d'ajout : </label> <br>
-            <input type="text"  name="add"  id="ajout"  value=<?php echo $row->pro_d_ajout?>  style="width:90%"  disabled>
+            <input type="text"  name="date_add"  id="ajout"  value=<?php echo $row->pro_d_ajout?>  style="width:90%"  disabled>
             <br><br>
 
             <label for="modification"> Date de modification : </label> <br>
-            <input type="date"  name="modif"  id="modification"  value=<?php echo $row->pro_d_modif?>  style="width:90%"  disabled>
+            <input type="date"  name="date_modif"  id="modification"  value=<?php echo $row->pro_d_modif?>  style="width:90%"  disabled>
             <br><br>
 
 
             <label for="categorie"> Catégorie : </label> <br>
-                <select id="categorie"  name="cat"  style="width:90%"  required> 
+                <select id="categorie"  name="categ"  style="width:90%"  required> 
                         <!-- Code PHP -->
                         <?php
                         //Connéxion à la base de données 

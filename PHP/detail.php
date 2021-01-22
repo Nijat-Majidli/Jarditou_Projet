@@ -70,7 +70,6 @@
     ?>
 
 
-
     <!-- PAGE MAIN CONTENT -->
     <div class="container"> 
         <form  action="modif.php"  method="GET"  style="padding-left: 100px">
@@ -84,7 +83,7 @@
             <br><br>
 
             <label for="categorie"> Catégorie : </label> <br>
-            <input type="text"  name="categorie_produit"  id="categorie"  value=<?php echo $row->pro_cat_id?>  style="width:90%"  disabled>
+            <input type="text"  name="categorie_produit"  id="categorie"  value=<?php echo $row->pro_cat_id?>  style="width:90%"  readonly>
             <br><br>
 
             <label for="libelle"> Libellé : </label> <br>
@@ -92,7 +91,7 @@
             <br><br>
 
             <label for="description"> Description : </label> <br>
-            <input type="text"  name="description_produit"  id="description"  value=<?php echo $row->pro_description?>  style="width:90%"  disabled>
+            <input type="text"  name="description_produit"  id="description"  value=<?php echo $row->pro_description?>  style="width:90%"  readonly>
             <br><br>
 
             <label for="prix"> Prix : </label> <br>
