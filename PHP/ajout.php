@@ -159,7 +159,7 @@
     
     <script>
 
-        //vérifie si on envoit ou non le formulaire à "script_modif.php"
+        //vérifie si on envoit ou non le formulaire à "script_ajout.php"
         function verif()
         { 
             //Rappel : confirm() -> Bouton OK et Annuler, renvoie true ou false
@@ -169,9 +169,9 @@
 
             if (resultat==false)
             {
-                alert("Vous avez annulé les modifications \n Aucune modification ne sera apportée à cet enregistrement !");
+                alert("Vous avez annulé les ajouts!");
 
-                //annule l'évènement par défaut ... SUBMIT vers "script_modif.php"
+                //annule l'évènement par défaut ... SUBMIT vers "script_ajout.php"
                 event.preventDefault();    
             }
         }
