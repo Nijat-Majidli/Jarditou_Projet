@@ -32,9 +32,10 @@ $pro_bloque = htmlspecialchars($_POST['bloq']);
 
 
 
-// Le problème principal de l'upload d'un fichier est la sécurité. On doit tout d'abord vérifier 2 points basiques :
-// 1. Le fichier a-t-il bien été téléchargé ?
-// 2. Le type du fichier envoyé par l'utilisateur est-il celui attendu (image, document Word, PDF etc...) ?
+/* Le problème principal de l'upload d'un fichier est la sécurité. On doit tout d'abord vérifier 2 points basiques :
+   1. Le fichier a-t-il bien été téléchargé ?
+   2. Le type du fichier envoyé par l'utilisateur est-il celui attendu (image, document Word, PDF etc...) ?
+*/
 
 // PHP fournit un extension nommée FILE_INFO qui fait référence en termes de sécurité. Voici comment l'utiliser, pour un type :
 // On met les types autorisés dans un tableau (ici pour une image):
@@ -47,11 +48,11 @@ finfo_close($finfo);
 
 if (in_array($mimetype, $aMimeTypes))
 {
-   // Le type est parmi ceux autorisés, donc OK, on va pouvoir déplacer et renommer le fichier.
-   // Par défaut, le fichier téléchargé est stocké dans le répertoire tmp (temporary) de notre serveur Wamp dans C:/wamp/tmp 
-   // Mais ce fichier devra se trouver dans un répertoire de notre projet, il faut donc le déplacer.
-   // Donc, via la méthode "move_uploded_file()" on va déplacer notre fichier image vers le répertoire "image" de notre projet et 
-   // au même temps on rénomme l'image en lui donnant le nom "$pro_id" (id de produit)  et l'extension du fichier "$pro_photo"      
+   /* Le type est parmi ceux autorisés, donc OK, on va pouvoir déplacer et renommer le fichier.
+   Par défaut, le fichier téléchargé est stocké dans le répertoire tmp (temporary) de notre serveur Wamp dans C:/wamp/tmp 
+   Mais ce fichier devra se trouver dans un répertoire de notre projet, il faut donc le déplacer.
+   Donc, via la méthode "move_uploded_file()" on va déplacer notre fichier image vers le répertoire "image" de notre projet et 
+   au même temps on rénomme l'image en lui donnant le nom "$pro_id" (id de produit)  et l'extension du fichier "$pro_photo" */   
    move_uploaded_file($_FILES["fichier"]["tmp_name"], "public/image/$pro_id.$pro_photo");   
 } 
 else 

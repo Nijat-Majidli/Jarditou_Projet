@@ -98,7 +98,7 @@
             <input type="text"  name="prix_produit"  id="prix"  value=<?php echo $row->pro_prix?>  style="width:90%"  disabled>
             <br><br>
 
-            <label for="stock"> Description : </label> <br>
+            <label for="stock"> Stock : </label> <br>
             <input type="text"  name="stock_produit"  id="stock"  value=<?php echo $row->pro_stock?>  style="width:90%"  disabled>
             <br><br>
 
