@@ -1,8 +1,8 @@
 <?php
 
-    // On va enregistrer la date d'inscription et dernier connexion de nouveau client. Pour obtenir la bonne date et heure, il faut 
-    // configurer la valeur de l'option datetime_zone sur la valeur Europe/Paris.
-    // Donc, il faut ajouter l'instruction date_default_timezone_set("Europe/Paris"); dans vos scripts avant toute manipulation de dates. 
+    /* On va enregistrer la date d'inscription et dernier connexion de nouveau client. Pour obtenir la bonne date et heure, il faut 
+    configurer la valeur de l'option datetime_zone sur la valeur Europe/Paris.
+    Donc, il faut ajouter l'instruction date_default_timezone_set("Europe/Paris"); dans vos scripts avant toute manipulation de dates.   */
     date_default_timezone_set('Europe/Paris');
 
 
