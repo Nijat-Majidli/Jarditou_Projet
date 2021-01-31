@@ -1,8 +1,9 @@
 <?php 
-    session_start();  // il est impératif d'utiliser la fonction session_start() au début de chaque fichier PHP dans 
-                      // lequel on manipulera cette variable et avant tout envoi de requêtes HTTP, c'est-à-dire avant tout 
-                      // echo ou quoi que ce soit d'autre : rien ne doit avoir encore été écrit/envoyé à la page web.
-
+    session_start();  
+    /* ATTENTION
+    Il est impératif d'utiliser la fonction session_start() au début de chaque fichier PHP dans lequel on manipulera cette 
+    variable et avant tout envoi de requêtes HTTP, c'est-à-dire avant tout echo ou quoi que ce soit d'autre : rien ne doit 
+    avoir encore été écrit/envoyé à la page web.  */
 
     if (isset($_SESSION['role']) && $_SESSION['role']=='admin')
     {
@@ -15,7 +16,6 @@
         exit;
     }
 ?>
-
 
 
 
@@ -83,10 +83,10 @@
                     
                     if($nbLigne > 1)
                     {
-                        while ($row = $result->fetch(PDO::FETCH_OBJ))      // Grace à méthode fetch() on choisit le 1er ligne de chaque colonne et la mets dans l'objet $row
-                        {                                                  // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de chaque colonne et les mets dans l'objet $row
+                        while ($row = $result->fetch(PDO::FETCH_OBJ))       // Grace à méthode fetch() on choisit le 1er ligne de chaque colonne et la mets dans l'objet $row
+                        {                                                   // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de chaque colonne et les mets dans l'objet $row
                     ?>
-                            <option  value="<?php echo $row->cat_id ?>">  <?php echo $row->cat_nom ?>  </option> 
+                            <option  value="<?php echo $row->cat_id ?>" required>  <?php echo $row->cat_nom ?>  </option> 
                             <br>
                     <?php
                         }

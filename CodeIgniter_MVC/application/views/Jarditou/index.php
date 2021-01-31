@@ -1,8 +1,9 @@
 <?php 
-    session_start();  // il est impératif d'utiliser la fonction session_start() au début de chaque fichier PHP dans 
-                      // lequel on manipulera cette variable et avant tout envoi de requêtes HTTP, c'est-à-dire avant tout 
-                      // echo ou quoi que ce soit d'autre : rien ne doit avoir encore été écrit/envoyé à la page web.
-
+    session_start();  
+    /* ATTENTION
+    Il est impératif d'utiliser la fonction session_start() au début de chaque fichier PHP dans lequel on manipulera cette 
+    variable et avant tout envoi de requêtes HTTP, c'est-à-dire avant tout echo ou quoi que ce soit d'autre : rien ne doit 
+    avoir encore été écrit/envoyé à la page web.  */
 
     if (isset($_SESSION['login']))
     {
@@ -49,7 +50,7 @@
 
     <!-- PAGE MAIN CONTENT -->
     <div class="container"> 
-        <div class="table-responsive" style="margin-top: 20px;"> 
+        <div class="table-responsive" style="margin-top:20px;"> 
             <!-- AJOUTER button -->
             <a href="ajout.php"> 
                 <button style="float:left; margin:0 0 10px 840px; padding:10px 30px; border-radius:10px; background-color:green; color:white"> Ajouter </button> 
@@ -66,11 +67,12 @@
                         <th scope="col"> ID </th>
                         <th scope="col"> Référence </th>
                         <th scope="col"> Libellé </th>
+                        <th scope="col"> Description </th>
                         <th scope="col"> Prix </th>
                         <th scope="col"> Stock </th>
                         <th scope="col"> Couleur </th>
-                        <th scope="col"> Ajout </th>
-                        <th scope="col"> Modif </th>
+                        <th scope="col"> Date_d'ajout </th>
+                        <th scope="col"> Date_modification </th>
                         <th scope="col"> Bloqué </th>
                     </tr>
                 </thead>
@@ -97,7 +99,7 @@
                     {                                              // Avec la boucle "while" on choisit 2eme, 3eme, etc... lignes de chaque colonne et les mets dans l'objet $row
 ?>
                         <tr>
-                            <td class="table-warning"  style="width: 150px">
+                            <td class="table-warning"  style="width:130px">
                                 <div>
                                     <img  src="<?php echo "public/image/"; echo $row->pro_id; echo "."; echo $row->pro_photo ?>"  alt="imgproduit"  class="img-fluid">
                                 </div>
@@ -115,6 +117,11 @@
                             <td class="table-warning"> 
                                 <div>  
                                     <a href="detail.php?pro_id=<?php echo $row->pro_id ?>">  <?php echo $row->pro_libelle; ?>  </a>
+                                </div>
+                            </td>
+                            <td> 
+                                <div> 
+                                    <?php  echo $row->pro_description; ?>
                                 </div>
                             </td>
                             <td> 
