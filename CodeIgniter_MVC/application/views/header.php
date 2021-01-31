@@ -45,7 +45,7 @@
                                     <a class="nav-link"  href="<?php echo site_url("produits/liste");?>"> Tableau </a>
                                 </li>
                                 <li class="nav-item"  style="margin-left: 50px;">
-                                    <a class="nav-link"  href="<?php echo site_url("produits/contact");?>"> Contact </a>    
+                                    <a class="nav-link"  href="<?php echo site_url("users/contact");?>"> Contact </a>    
                                 </li>
                             </ul>
                         </div>

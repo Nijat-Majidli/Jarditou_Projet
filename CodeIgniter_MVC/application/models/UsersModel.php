@@ -26,22 +26,35 @@
 
     class UsersModel extends CI_Model
     {
-        // liste() est une méthode destinée à sélectionner les champs "mot de passe" et "user_blocked" en base de données 
-        public function liste($user_login) 
+        // C'est une méthode destinée à selectionner le champ "user_login"
+        public function user1()
+        { 
+            $requete = $this->db->query("SELECT user_login FROM users");
+            
+            $result = $requete->result();   // Méthode result() nous retourne un tableau ayant les clés en forme d'objet 
+            
+            return $result;
+        }
+        
+        
+        
+        
+        // C'est une méthode destinée à sélectionner les champs "mot de passe" et "user_blocked" en base de données 
+        public function user2($user_login) 
         {
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 
-            $requete = $this->db->query("SELECT user_mdp, user_blocked FROM users WHERE user_login =?", $user_login);    // Requête de SELECT
+            $requete = $this->db->query("SELECT user_mdp, user_blocked FROM users WHERE user_login='$user_login' ");    // Requête de SELECT
 
-            $resultat = $requete->row();   // Récupération première ligne du résultat dans la variable $resultat 
+            $resultat = $requete->row();   // Méthode row() nous retourne un objet 
 
             return $resultat;
         }
 
 
 
-        // liste2() est une méthode destinée à mettre à jour la date et l'heure du connexion du client
-        public function liste2($user_login) 
+        // C'est une méthode destinée à mettre à jour la date et l'heure du connexion du client
+        public function user3($user_login) 
         {
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 
@@ -49,84 +62,73 @@
             $time = new DateTime();  
             $date = $time->format("Y/m/d H:i:s"); 
 
-            $requete = $this->db->query("UPDATE users SET user_connexion=?",$date,"WHERE user_login=?", $user_login);   // Requête de UPDATE
+            $requete = $this->db->query("UPDATE users SET user_connexion='$date' WHERE user_login='$user_login' ");   // Requête de UPDATE
         }
 
 
 
-        // liste3() est une méthode destinée à sélectionner "user_role" avec critères (clauses WHERE) en base de données
-        public function liste3($user_login) 
+        // C'est une méthode destinée à sélectionner "user_role" avec critères (clauses WHERE) en base de données
+        public function user4($user_login) 
         {
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 
-            $requete = $this->db->query("SELECT user_role FROM users WHERE user_login=?", $user_login);
+            $requete = $this->db->query("SELECT user_role FROM users WHERE user_login='$user_login' ");
 
-            $resultat = $requete->row();   // Récupération première ligne du résultat dans la variable $resultat 
+            $resultat = $requete->row();   // Méthode row() nous retourne un objet  
             
             return $resultat;
         }
 
 
 
-        // liste4() est une méthode destinée à sélectionner "login_fail", "user_blocked" et "unblock_time" avec critères (clauses WHERE) en base de données
-        public function liste4($user_login) 
+        // C'est une méthode destinée à sélectionner "login_fail", "user_blocked" et "unblock_time" avec critères (clauses WHERE) en base de données
+        public function user5($user_login) 
         {
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 
-            $requete = $this->db->query("SELECT login_fail, user_blocked, unblock_time FROM users WHERE user_login=?", $user_login);
+            $requete = $this->db->query("SELECT login_fail, user_blocked, unblock_time FROM users WHERE user_login='$user_login' ");
                             
-            $resultat = $requete->row();   // Récupération première ligne du résultat dans la variable $resultat
+            $resultat = $requete->row();   // Méthode row() nous retourne un objet 
             
             return $resultat;
         }
 
 
 
-        // liste5() est une méthode destinée à mettre à jour le champ "login_fail"
-        public function liste5($user_login, $login_fail) 
+        // C'est une méthode destinée à mettre à jour le champ "login_fail"
+        public function user6($user_login, $login_fail) 
         {
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
             $login_fail = htmlspecialchars($login_fail);
 
-            $requete = $this->db->query("UPDATE users SET login_fail=?",$login_fail, "WHERE user_login=?",$user_login);
+            $requete = $this->db->query("UPDATE users SET login_fail='$login_fail' WHERE user_login='$user_login' ");
         }
 
 
 
-        // liste6() est une méthode destinée à mettre à jour les champs "user_blocked" et "unblock_time"
-        public function liste6($user_login) 
+        // C'est une méthode destinée à mettre à jour les champs "user_blocked" et "unblock_time"
+        public function user7($user_login) 
         {
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 
             $unblock_time = time() + (1*1*2*60);   // La fonction time() renvoie l'heure actuelle en nombre de secondes depuis l'époque Unix (1er janvier 1970 00:00:00 GMT).
 
-            $requete = $this->db->query("UPDATE users SET user_blocked=?",$user_login, "WHERE user_login=?", $user_login);
-            $requete = $this->db->query("UPDATE users SET unblock_time=?",$unblock_time, "WHERE user_login=?", $user_login);
+            $requete = $this->db->query("UPDATE users SET user_blocked='$user_login' WHERE user_login='$user_login' ");
+            $requete = $this->db->query("UPDATE users SET unblock_time='$unblock_time' WHERE user_login='$user_login' ");
         }
 
 
 
-        // liste7() est une méthode destinée à mettre à jour les champs "login_fail", "user_blocked" et "unblock_time"
-        public function liste7($user_login)
+        // C'est une méthode destinée à mettre à jour les champs "login_fail", "user_blocked" et "unblock_time"
+        public function user8($user_login)
         { 
             $user_login = htmlspecialchars($user_login);    // La fonction "htmlspecialchars" nous aide d'éviter la faille XSS
 
-            $requete = $this->db->query("UPDATE users SET login_fail=?",0, "WHERE user_login=?", $user_login);
-            $requete = $this->db->query("UPDATE users SET user_blocked=?",0, "WHERE user_login=?", $user_login);
-            $requete = $this->db->query("UPDATE users SET unblock_time=?",0, "WHERE user_login=?", $user_login);
+            $requete = $this->db->query("UPDATE users SET login_fail=0 WHERE user_login='$user_login' ");
+            $requete = $this->db->query("UPDATE users SET user_blocked=0 WHERE user_login='$user_login' ");
+            $requete = $this->db->query("UPDATE users SET unblock_time=0 WHERE user_login='$user_login' ");
         }
 
-
-
-        // liste8() est une méthode destinée à selectionner le champ "user_login"
-        public function liste8()
-        { 
-            $requete = $this->db->query("SELECT user_login FROM users");
-            
-            $result = $requete->result();   // Récupération des résultats de la requête dans la variable $result
-            
-            return $result;
-        }
 
 
 

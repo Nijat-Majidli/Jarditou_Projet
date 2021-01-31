@@ -24,6 +24,7 @@
     */
 
 
+    
     class ProduitsModel extends CI_Model
     {
         // liste() est une méthode destinée à sélectionner la liste des produits en base de données 

@@ -37,15 +37,30 @@
 
     class Users extends CI_Controller 
     {
+        // Avec le méthode "contact()" on va afficher la page contact (script vue "contact.php")
+        public function contact()
+        {   
+            /* Chargement des différents vues
+            Notez qu'une vue est apellée par son nom de fichier sans l'extension ".php"
+            Attention! Les vues doivent être chargées dans l'ordre de leur affichage (ici header > contact > footer) :    */
+            $this->load->view('header');
+            $this->load->view('contact');   
+            $this->load->view('footer');
+        }
+
+
+
         // Avec le méthode "deconnexion()" on va détruire la session 
         public function deconnexion()
         {   
             $this->session->sess_destroy();
-            redirect("users/login");   // Redirige le navigateur vers la méthode login() du contrôleur Users.php. 
+
+            redirect("users/login");    // Rediriger le navigateur vers la méthode login() du contrôleur Users.php     
         }
         
         
         
+
         // Avec le méthode "login()" on va afficher et traiter la page login (script vue "login.php")
         public function login()
         {   
@@ -58,38 +73,41 @@
                 Notez que $this->input->post("nom_du_champ") permet de récupérer la valeur d'un seul champ en lui spécifiant en argument la valeur de l'attribut name.  */
 
                 $user_login = $data['user_login'];
+                
                 $user_mdp = $data['user_mdp'];
 
                 // On peut ajouter une date de modification que le formulaire ne contient pas :
                 $time = new DateTime();     // On utilise l'objet DateTime() pour enregistrer dans la base de données la date et l'heure du connexion du client.
                 $data["user_connexion"] = $time->format("Y-m-d H:i:s"); 
 
-                // /* Vérification si login saisi par utilisateur déjà existe dans la base de données ou non ?
-                // Pour cela on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   */   
-                // $this->load->model('usersModel');
+                /* Vérification si login saisi par utilisateur déjà existe dans la base de données ou non ?
+                Pour cela on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   */   
+                $this->load->model('usersModel');
 
-                // // Ensuite on appelle la méthode liste8() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $result 
-                // $result = $this->usersModel->liste8(); 
+                // On charge le modéle en seul fois et ensuite on va utiliser plusieurs méthodes qui se trouvent dans cette modéle.
+
+                // Ensuite on appelle la méthode user1() du modèle, qui retourne le tableau ayant les clés en forme d'objet 
+                $result = $this->usersModel->user1();
                 
-                // // Ici $result est un tableau qui contient: user_login et ses valeurs 
+                // Ici $result est un tableau qui contient : objet user_login et ses valeurs 
                 
-                // foreach($result as $login)
-                // {
-                //     $aLogins[] = $login;
-                // }
+                foreach($result as $login)
+                {
+                    $aLogins[] = $login->user_login;   // ici user_login est un attribut de l'objet $login
+                }
                 
-                // if (!in_array($user_login, $aLogins))
-                // {
-                //     $Message["notice"] = "Ce login n'existe pas!";
+                if (!in_array($user_login, $aLogins))
+                {
+                    $Message["notice"] = "Ce login n'existe pas ! <br> Veuillez vous inscrire !";
                     
-                //     // On affiche la vue "login" en lui transmettant le tableau $Message :
-                //     $this->load->view('header');
-                //     $this->load->view('login', $Message);
-                //     $this->load->view('footer');
-                //     return;
+                    // On affiche la vue "login" en lui transmettant le tableau $Message :
+                    $this->load->view('header');
+                    $this->load->view('login', $Message);
+                    $this->load->view('footer');
+                    return;
 
-                //     // Pour rediriger le navigateur vers la méthode login() du contrôleur Users.php on peut aussi écrire le code: redirect("users/login");    
-                // } 
+                    /* Pour rediriger le navigateur vers la méthode login() du contrôleur Users.php:  redirect("users/login");  */     
+                } 
 
                 /* Avant d'inserer les données en base de données il faut les contrôler. Pour cela on applique la librairie 'form_validation' 
                 qui fonctionne comme suit : la méthode "set_rules()" cible un champ et y applique un ou plusieurs filtres de validation:    */
@@ -118,14 +136,15 @@
                 {
                     /* Avant d'insertion en bdd on fait vérification: 
                     Est-ce que le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
-                    D'abord on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.
-                    Pour cela, on va se connecter à la base de données en utilisant le modéle ProduitsModel :    */
-                    
-                    // Chargement du modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   
+                    Pour cela on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.     */
+
+                    // Tout d'abord on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   
                     $this->load->model('usersModel');
 
-                    // On appelle la méthode liste() du modèle, qui retourne un objet ici affecté dans la variable $aCode (un objet)  
-                    $aCode = $this->usersModel->liste($user_login);  
+                    // On charge le modéle en seul fois et ensuite on va utiliser plusieurs méthodes qui se trouvent dans cette modéle  
+
+                    // On appelle la méthode user2() du modèle qui nous renvoie un objet:
+                    $aCode = $this->usersModel->user2($user_login);  
 
                     /*  Ici $aCode est un objet qui contient:
                     1. user_mdp et sa valeur, 
@@ -137,8 +156,8 @@
 
                     if ($PasswordCorrect && empty($aCode->user_blocked))
                     {
-                        // On appelle la méthode liste2() du modèle, qui mets à jour la date et l'heure du connexion du client 
-                        $this->usersModel->liste2($user_login);   
+                        // On appelle la méthode user3() du modèle, qui mets à jour la date et l'heure du connexion du client 
+                        $this->usersModel->user3($user_login);   
 
                         /* Pour utiliser les sessions avec CodeIgniter, il faut charger la librairie session :
                         soit dans une méthode de contrôleur, au cas par cas.
@@ -152,12 +171,12 @@
                         A retenir: Même si CodeIgniter propose sa propre syntaxe pour gérer les sessions, il reste possible 
                         d'utiliser la syntaxe native PHP ($_SESSION et fonctions associées).   */
 
-                        // On appelle la méthode liste3() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $resultat (un tableau) 
-                        $resultat = $this->usersModel->liste3($user_login);
+                        // On appelle la méthode user4() du modèle, qui nous retourne un objet:  
+                        $resultat = $this->usersModel->user4($user_login);
 
-                        //  Ici $resultat est un tableau qui contient: user_role et sa valeur
+                        //  Ici $resultat est un objet qui contient: user_role et sa valeur
         
-                        if($resultat['user_role'] == 'admin')
+                        if($resultat->user_role == 'admin')
                         {
                             $this->session->set_userdata('role', 'administrateur');    // set_userdata('role', 'administrateur') est égal à $_SESSION["role"] = "administrateur" en PHP natif.
                         }
@@ -170,22 +189,22 @@
                     }
                     else 
                     {
-                        // On appelle la méthode liste4() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $aListe (un tableau) 
-                        $aListe = $this->usersModel->liste4($user_login);  
+                        // On appelle la méthode user5() du modèle, qui retourne l'objet ici affecté dans la variable $aListe 
+                        $aListe = $this->usersModel->user5($user_login);  
 
-                        /* Ici $aListe est un tableau qui contient:
+                        /* Ici $aListe est un objet qui contient:
                         1. login_fail et sa valeur, 
                         2. user_blocked et sa valeur, 
                         3. unblock_time et sa valeur.
                         */
                          
                         // On augmente le nombre de login_fail à chaque fois que l'utilisateur rate s'identifier :
-                        $login_fail = $aListe['login_fail'] + 1;  
+                        $login_fail = $aListe->login_fail + 1;  
 
                         if($login_fail < 4)   
                         {
-                            // On appelle la méthode liste5() du modèle, qui mets à jour le champ "login_fail"
-                            $this->usersModel->liste5($user_login, $login_fail);
+                            // On appelle la méthode user6() du modèle, qui mets à jour le champ "login_fail"
+                            $this->usersModel->user6($user_login, $login_fail);
 
                             $Message["notice"] = "Mauvais identifiant ou mot de passe!"; 
                             
@@ -202,10 +221,10 @@
                         }
                         else   // Si l'utilisateur 3 fois ne saisit pas son mot de passe correctement on le bloque.
                         {
-                            if(empty($aListe['user_blocked']))
+                            if(empty($aListe->user_blocked))
                             {
-                                // On appelle la méthode liste6() du modèle, qui mets à jour les champs "user_blocked" et "unblock_time" 
-                                $this->usersModel->liste6($user_login);
+                                // On appelle la méthode user7() du modèle, qui mets à jour les champs "user_blocked" et "unblock_time" 
+                                $this->usersModel->user7($user_login);
 
                                 $Message["notice"] = "Vous êtes bloqué pour 2 minutes!";
 
@@ -219,10 +238,10 @@
                             {
                                 $current_time = time();     // La fonction time() renvoie l'heure actuelle en nombre de secondes depuis l'époque Unix (1er janvier 1970 00:00:00 GMT).
 
-                                if($aListe['unblock_time'] < $current_time)
+                                if($aListe->unblock_time < $current_time)
                                 {
-                                    // On appelle la méthode liste7() du modèle, qui mets à jour les champs "login_fail", "user_blocked" et "unblock_time"
-                                    $this->usersModel->liste7($user_login);
+                                    // On appelle la méthode user8() du modèle, qui mets à jour les champs "login_fail", "user_blocked" et "unblock_time"
+                                    $this->usersModel->user8($user_login);
 
                                     $Message["notice"] = "Vous êtes débloqué ! <br> Veuillez réessayer de vous connecter!";
                                     
@@ -281,6 +300,11 @@
                 // On peut ajouter une date de modification que le formulaire ne contient pas :
                 $time = new DateTime();     // On utilise l'objet DateTime() pour enregistrer dans la base de données la date et l'heure d'inscription du client.
                 $data["user_inscription"] = $time->format("Y-m-d H:i:s"); 
+
+                /* On peut aussi transformer une information venant du formulaire: 
+                $data["pro_ref"] = strtoupper($pro_ref)    ici on mets la référence du produit en majuscules    
+                
+                On peut supprimer un champ inutile avec la fonction PHP unset() avant l'insertion en bdd:  unset($data["champPasEnBase"])    */
                 
                 /* Un mot de passe ne doit jamais être stocké en clair : il doit être crypté à l'aide d'un algorithme de cryptage afin que 
                 sa valeur ne puisse être lue. La fonction password_hash() permet d’utiliser des algorithmes de cryptage en PHP. 
@@ -304,27 +328,29 @@
                 Pour cela on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   */   
                 $this->load->model('usersModel');
 
-                // Ensuite on appelle la méthode liste8() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $result (un tableau) 
-                $result = $this->usersModel->liste8();  
+                // On charge le modéle en seul fois et ensuite on va utiliser plusieurs méthodes qui se trouvent dans cette modéle.
 
-                // Ici $result est un tableau qui contient : user_login et ses valeurs 
+                // Ensuite on appelle la méthode user1() du modèle, qui retourne le tableau ayant les clés en forme d'objet 
+                $result = $this->usersModel->user1();
+                
+                // Ici $result est un tableau qui contient : objet user_login et ses valeurs 
                 
                 foreach($result as $login)
                 {
-                    $aLogins[] = $login;
+                    $aLogins[] = $login->user_login;   // ici user_login est un attribut de l'objet $login
                 }
                 
-                if (in_array($data["user_login"], $aLogins))
+                if (in_array($user_login, $aLogins))
                 {
                     $Message["notice"] = "Ce login déjà existe! Choissiez un autre !";
                     
-                    // On affiche la vue "login" en lui transmettant le tableau $Message :
+                    // On affiche la vue "inscription" en lui transmettant le tableau $Message :
                     $this->load->view('header');
                     $this->load->view('inscription', $Message);
                     $this->load->view('footer');
                     return;
 
-                    /* Pour rediriger le navigateur vers la méthode login() du contrôleur Users.php:  redirect("users/login");  */     
+                    /* Pour rediriger le navigateur vers la méthode inscription() du contrôleur Users.php :  redirect("users/inscription");  */     
                 } 
                 
                 /* Avant d'inserer les données en base de données il faut les contrôler. Pour cela on applique la librairie 'form_validation' 
@@ -339,12 +365,15 @@
                 Le filtre "min_length[2]" requiert une valeur d'au moins 2 caractères.  */
                 
                 $this->form_validation->set_rules("user_prenom", "Prenom", "required|min_length[1]");  
-                $this->form_validation->set_rules("user_email", "Email", "required|regex_match[\^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$\]"); // Vérification la validité de format de l'adresse mail avec REGEX en utilisant la fonction regex_match() qui renvoie True or False
+                $this->form_validation->set_rules("user_email", "Email", "required|min_length[8]"); 
                 $this->form_validation->set_rules("user_login", "Login", "required|min_length[1]"); 
-                $this->form_validation->set_rules("user_mdp", "Mot de passe", "required|min_length[1]");  
-                $this->form_validation->set_rules("user_mdp2", "Mot de passe2", "required|min_length[1]");  
+                $this->form_validation->set_rules("user_mdp", "Mot de passe", "required|min_length[1]");   
                 $this->form_validation->set_rules("accepter", "Accepter", "required|min_length[1]");   
                                 
+                /* Si un filtre venait à manquer, on peut tenter de passer par les expressions régulières via le filtre regex_match[\regex\] 
+                Exemple de filtre pour valider une date au format dd/mm/yyyy :
+                $this->form_validation->set_rules('pro_d_ajout', 'Date', 'required|regex_match[\^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$\]');                                                        
+                
                 /* L'étape suivante est l'exécution de ce filtre, grâce à la méthode run(), qui va appliquer le filtre et 
                 retourner TRUE si la valeur est correcte, ou FALSE dans le cas contraire:   */
                 
@@ -357,13 +386,21 @@
                 }
                 else  // La validation a réussi, nos valeurs sont bonnes, on peut insérer en base de données
                 {
-                    $this->db->insert('users', $data);    // On génère et exécute une requête INSERT
+                    /* Mais avant l'insertion en bdd avec la fonction PHP unset() on va supprimer les champs "user_mdp2" et 
+                    "accepter" qui ne sont pas dans bdd  :   */  
+                    unset($data["user_mdp2"]); 
+                    unset($data["accepter"]);
+
+                    // On peut insérer $data en base de données avec méthode insert() :
+                    $this->db->insert('users', $data);    
 
                     /* Le premier argument ('users') est le nom de la table dans laquelle les données doivent être insérées.
                     Le second argument ($data) est le tableau contenant les données issues du formulaire d'inscription ('inscription.php').    
                     
                     ATTENTION! Le problème qui se pose avec l'utilisation de $this->db->insert('users', $data); c'est que les noms des colonnes 
                     de la table ciblée doivent être strictement identiques aux attibuts name des champs input, ce qui n'est pas toujours le cas.  */
+
+                    redirect("users/login");   // Redirige le navigateur vers la méthode login() du contrôleur Users.php
                 }
             }
             else  // 1er appel de la page: chargement de la vue 'inscription.php' et l'affichage du formulaire d'inscription

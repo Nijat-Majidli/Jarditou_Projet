@@ -50,20 +50,6 @@
         
 
 
-        // Avec le méthode "contact()" on va afficher la page contact (script vue "contact.php")
-        public function contact()
-        {   
-            /* Chargement des différents vues
-            Notez qu'une vue est apellée par son nom de fichier sans l'extension ".php"
-            Attention! Les vues doivent être chargées dans l'ordre de leur affichage (ici header > contact > footer) :    */
-            $this->load->view('header');
-            $this->load->view('contact');   
-            $this->load->view('footer');
-        }
-
-
-
-
         // Avec le méthode "liste()" on va afficher la page de liste de produits (script vue "liste.php")
         public function liste()
         {   

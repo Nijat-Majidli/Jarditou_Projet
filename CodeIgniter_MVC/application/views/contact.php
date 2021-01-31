@@ -14,7 +14,7 @@
 
   <!-- PAGE MAIN CONTENT -->
   <!-- Formulaire Contact -->
-  <!-- Remarquez la ligne "echo form_open()" qui génère le code suivant: <form action="http://localhost/ci/index.php/produits/contact" method="post">.
+  <!-- Remarquez la ligne "echo form_open()" qui génère le code suivant: <form action="http://localhost/ci/index.php/users/contact" method="post">.
   La valeur de l'attribut "action" a été renseignée automatiquement et renvoie le formulaire vers le même contrôleur/méthode qui a affiché 
   la vue, ce qui signifie que la même méthode sera utilisée pour afficher et traiter le formulaire.
   Il est très important d'utiliser la fonction form_open() car elle applique des mécanismes de sécurité contre les failles XSS et CSRF -->
