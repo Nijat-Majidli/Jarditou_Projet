@@ -21,7 +21,13 @@
     <body>    
         <div class="container" style="margin: 80px 0"> 
             <div style="margin-left:620px">
-                <?php if (isset($notice)) {echo "<h6 style='margin-bottom:30px; color:red'>" .$notice. "</h6>" ;} ?>
+                <!-- Affichage des message -->
+                <?php 
+                    if (isset($notice)) 
+                    {
+                        echo "<h6 style='margin-bottom:30px; color:red'>" .$notice. "</h6>" ;
+                    } 
+                ?>
                 
                 <!-- Formulaire Login -->
                 <!-- Remarquez la ligne "echo form_open()" qui génère le code suivant: <form action="http://localhost/ci/index.php/users/login" method="post">.

@@ -5,7 +5,7 @@
     /* IMPORTANT!  Le contrôleur est un fichier PHP contenant le code d'une classe (ici classe Produits).
     Comme on peut le voir ci-dessous, la classe Produits hérite de la classe CI_Controller.
     La classe Produits (en UpperCase) doit se trouver dans le fichier Produits.php. Ce fichier est un controlleur et devra être placé 
-    dans le répertoire application/controllers. Par exemple: application/controllers/Produits.php 
+    dans le répertoire: application/controllers. Par exemple: application/controllers/Produits.php 
     Le nom d'un contrôleur doit commencer par une majuscule: Produits et le nom de fichier du contrôleur également : Produits.php   
     */
 
@@ -19,6 +19,7 @@
     1. Ouvrez le fichier config/config.php 
     2. Rechercher la ligne $config['base_url'] = '' 
     3. Renseigner comme valeur l'url de votre projet:  $config['base_url'] = 'http://localhost/CodeIgniter/';
+    
     Désormais, on pourra utiliser la fonction site_url() pour écrire un lien.   
     */
 
@@ -59,8 +60,10 @@
             // Chargement du modèle 'ProduitsModel' qui se trouve dans le fichier ProduitsModel.php
             $this->load->model('produitsModel');
 
-            // On appelle la méthode liste() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $aListe (un objet) 
-            $aListe = $this->produitsModel->liste();         
+            // On appelle la méthode liste() du modèle, qui retourne un tableau ayant les clés en forme d'objet 
+            $aListe = $this->produitsModel->liste();    
+            
+            // Ici variable $aListe est un tableau ayant les clés en forme d'objet et ses attributs. Pour mieux comprendre faites: echo var_dump($aListe);
 
             $aView["produits"] = $aListe;  /* Ajouter des résultats de la requête au tableau associatif $aView 
             
@@ -239,10 +242,10 @@
             // Chargement du modèle 'ProduitsModel' qui se trouve dans le fichier ProduitsModel.php
             $this->load->model('produitsModel');      
 
-            // On appelle la méthode liste3() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $aListe (un objet) 
+            // On appelle la méthode liste3() du modèle, qui retourne l'objet ici affecté dans la variable $aListe (un objet) 
             $aListe = $this->produitsModel->liste3($pro_id);  
         
-            // On appelle la méthode liste4() du modèle, qui retourne le tableau de résultat ici affecté dans la variable $aCateg (un objet) 
+            // On appelle la méthode liste4() du modèle, qui retourne l'objet ici affecté dans la variable $aCateg (un objet) 
             $aCateg = $this->produitsModel->liste4($pro_cat_id);  
 
             // On ajoute des résultats des requêtes au tableau associatif $aView

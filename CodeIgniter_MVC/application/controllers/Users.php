@@ -5,7 +5,7 @@
     /* IMPORTANT!   Le contrôleur est un fichier PHP contenant le code d'une classe (ici classe Users).
     Comme on peut le voir ci-dessous, la classe Users hérite de la classe CI_Controller.
     La classe Users (en UpperCase) doit se trouver dans le fichier Users.php. Ce fichier est un controlleur et devra 
-    être placé dans le répertoire application/controllers. Par exemple: application/controllers/Users.php 
+    être placé dans le répertoire: application/controllers.  Par exemple: application/controllers/Users.php 
     Le nom d'un contrôleur doit commencer par une majuscule: Users et le nom de fichier du contrôleur également : Users.php   
     */
 
@@ -19,13 +19,46 @@
     1. Ouvrez le fichier config/config.php 
     2. Rechercher la ligne $config['base_url'] = '' 
     3. Renseigner comme valeur l'url de votre projet:  $config['base_url'] = 'http://localhost/CodeIgniter/';
+    
     Désormais, on pourra utiliser la fonction site_url() pour écrire un lien.   
     */
 
     /* Il est possible d'indiquer quel sera le contrôleur et la méthode à exécuter au lancement de l'application (page d'accueil) :
     1. Ouvrez le fichier  config/routes.php 
     2. Recherchez la ligne  $route['default_controller'] = 'welcome'; 
-    3. Remplacez la valeur par le contrôleur et la méthode souhaitée comme page d'accueil: $route['default_controller'] = 'produits/acceuil';   
+    3. Remplacez la valeur par le contrôleur et la méthode souhaitée comme page d'accueil:  $route['default_controller'] = 'produits/acceuil';   
+    */
+
+    /*  IMPORTANT! 
+    Par exemple, pour transferer les données vers la vue login via la méthode redirect() il y a 2 possibilités :
+    1. Dans redirect() on peux passer un paramètre avec une valeur (exemple: 'kw=logout'):  redirect("users/login?kw=logout")
+    Ensuite on va recuperer cette paramètre depuis la vue login :
+    if (isset($_GET["kw"]) && $_GET["kw"]) == "logout") 
+    {
+        echo "Vous êtes déconnecté";
+    }
+
+    2. On peux stocker les données dans un attribut de notre controller accessible dans plusieurs méthodes:
+    class Users extends CI_Controller 
+    {
+        private $errormsg = "";
+
+        public function deconnexion()
+        {
+            $this->session->sess_destroy();
+            $this->_errormsg = "Vous êtes déconnecté";
+            redirect("users/login");    // Rediriger le navigateur vers la méthode login() du contrôleur Users.php   }
+        }
+
+        public function login()
+        {
+            if (this->_errormsg != "")
+            {
+                echo this->$php_errormsg;
+            }
+        }
+    }
+
     */
 
     /* On va enregistrer la date d'inscription et dernier connexion du client etc... 
@@ -55,10 +88,11 @@
         {   
             $this->session->sess_destroy();
 
-            redirect("users/login");    // Rediriger le navigateur vers la méthode login() du contrôleur Users.php     
+            // Rediriger le navigateur vers la méthode login() du contrôleur Users.php en lui envoyant via url ($_GET) la clé-valeur: 'kw=logout'
+            redirect("users/login?kw=logout");   
         }
         
-        
+
         
 
         // Avec le méthode "login()" on va afficher et traiter la page login (script vue "login.php")
@@ -80,8 +114,9 @@
                 $time = new DateTime();     // On utilise l'objet DateTime() pour enregistrer dans la base de données la date et l'heure du connexion du client.
                 $data["user_connexion"] = $time->format("Y-m-d H:i:s"); 
 
-                /* Vérification si login saisi par utilisateur déjà existe dans la base de données ou non ?
-                Pour cela on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   */   
+                // Vérification si login saisi par utilisateur déjà existe dans la base de données ou non ?
+                
+                // Pour cela on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php : 
                 $this->load->model('usersModel');
 
                 // On charge le modéle en seul fois et ensuite on va utiliser plusieurs méthodes qui se trouvent dans cette modéle.
@@ -89,10 +124,11 @@
                 // Ensuite on appelle la méthode user1() du modèle, qui retourne le tableau ayant les clés en forme d'objet 
                 $result = $this->usersModel->user1();
                 
-                // Ici $result est un tableau qui contient : objet user_login et ses valeurs 
+                // Ici $result est un tableau qui contient comme la clé:  objet user_login et ses valeurs 
                 
                 foreach($result as $login)
                 {
+                    // On crée le tableau $aLogins:
                     $aLogins[] = $login->user_login;   // ici user_login est un attribut de l'objet $login
                 }
                 
@@ -136,12 +172,7 @@
                 {
                     /* Avant d'insertion en bdd on fait vérification: 
                     Est-ce que le mot de passe saisi par utilisateur déjà existe dans la base de données ou non ?
-                    Pour cela on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.     */
-
-                    // Tout d'abord on va charger le modèle 'UsersModel' qui se trouve dans le fichier UsersModel.php   
-                    $this->load->model('usersModel');
-
-                    // On charge le modéle en seul fois et ensuite on va utiliser plusieurs méthodes qui se trouvent dans cette modéle  
+                    Pour cela on doit récupérer le mot de passe hashé de l'utilisateur qui se trouve dans la base de données.     */ 
 
                     // On appelle la méthode user2() du modèle qui nous renvoie un objet:
                     $aCode = $this->usersModel->user2($user_login);  
@@ -159,17 +190,19 @@
                         // On appelle la méthode user3() du modèle, qui mets à jour la date et l'heure du connexion du client 
                         $this->usersModel->user3($user_login);   
 
-                        /* Pour utiliser les sessions avec CodeIgniter, il faut charger la librairie session :
+                        /* Pour utiliser les sessions avec CodeIgniter, il faut charger la librairie 'session' :
                         soit dans une méthode de contrôleur, au cas par cas.
                         soit dans le fichier config/autoload.php, pour rendre la librairie disponible dans tout le projet.  */
 
                         // Pour mettre une variable en session, utiliser la méthode set_userdata() :   
                         $this->session->set_userdata('login', $user_login);    
                         
-                        /* set_userdata('login', $user_login)  est égal à  $_SESSION["login"] = $user_login en PHP natif.
+                        /* Ici set_userdata('login', $user_login)  est égal à  $_SESSION["login"] = $user_login  en PHP natif.
                         
                         A retenir: Même si CodeIgniter propose sa propre syntaxe pour gérer les sessions, il reste possible 
-                        d'utiliser la syntaxe native PHP ($_SESSION et fonctions associées).   */
+                        d'utiliser la syntaxe native PHP ($_SESSION et fonctions associées).   
+                        
+                        N'obliez pas que la variable superglobale $_SESSION est un tableau associatif comme les variables $_POST et $_GET.   */
 
                         // On appelle la méthode user4() du modèle, qui nous retourne un objet:  
                         $resultat = $this->usersModel->user4($user_login);
@@ -268,19 +301,34 @@
             }
             else  // 1er appel de la page: chargement de la vue 'login.php' et l'affichage du formulaire login
             {  
-                $Message["notice"] = "Veuillez vous identifier"; 
+                if (isset($_GET["kw"]) && $_GET["kw"] == "logout") 
+                {
+                    $Message["notice"] = "Vous êtes déconnecté ";
 
-                /* Chargement des différents vues
-                Notez qu'une vue est apellée par son nom de fichier sans l'extension ".php"
-                Attention! Les vues doivent être chargées dans l'ordre de leur affichage (ici header > login > footer).
-                // On affiche la vue "login" en lui transmettant le tableau $Message    */
-                $this->load->view('header');
-                $this->load->view('login', $Message);   
-                $this->load->view('footer');
-                return;
+                    /* Chargement des différents vues
+                    Notez qu'une vue est apellée par son nom de fichier sans l'extension ".php"
+                    Attention! Les vues doivent être chargées dans l'ordre de leur affichage (ici header > login > footer).
+                    // On affiche la vue "login" en lui transmettant le tableau $Message    */
+                    $this->load->view('header');
+                    $this->load->view('login', $Message);   
+                    $this->load->view('footer');
+                    return;
+                }
+                else 
+                {
+                    $Message["notice"] = "Veuillez vous identifier"; 
+
+                    /* Chargement des différents vues
+                    Notez qu'une vue est apellée par son nom de fichier sans l'extension ".php"
+                    Attention! Les vues doivent être chargées dans l'ordre de leur affichage (ici header > login > footer).
+                    // On affiche la vue "login" en lui transmettant le tableau $Message    */
+                    $this->load->view('header');
+                    $this->load->view('login', $Message);   
+                    $this->load->view('footer');
+                    return;
+                } 
             }            
         }
-
 
 
 

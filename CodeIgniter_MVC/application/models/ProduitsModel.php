@@ -32,7 +32,7 @@
         {
             $requete = $this->db->query("SELECT * FROM produits");   // Requête de SELECT
             
-            $aProduits = $requete->result();    // Récupération des résultats de la requête dans la variable $aProduits
+            $aProduits = $requete->result();    // Méthode result() nous retourne un tableau ayant les clés en forme d'objet
 
             return $aProduits;            
         }
@@ -44,7 +44,7 @@
         {
             $requete = $this->db->query("SELECT * FROM categories");   // Requête de SELECT
             
-            $aCategories = $requete->result();   // Récupération des résultats de la requête dans la variable $aCategories
+            $aCategories = $requete->result();   // Méthode result() nous retourne un tableau ayant les clés en forme d'objet
 
             return $aCategories;            
         }
@@ -58,7 +58,7 @@
 
             $requete = $this->db->query("SELECT * FROM produits WHERE pro_id=?", $pro_id);   // Requête de SELECT avec WHERE
             
-            $aProduit = $requete->row();   // Récupération de la première ligne avec la méthode row() et on la mets dans tableau associatif $aProduit
+            $aProduit = $requete->row();   // Méthode row() nous retourne un objet 
 
             return $aProduit;            
         }
@@ -72,7 +72,7 @@
 
             $requete = $this->db->query("SELECT * FROM categories WHERE cat_id=?", $pro_cat_id);   // Requête de SELECT avec WHERE
             
-            $aCategorie = $requete->row();   // Récupération de la première ligne avec la méthode row() et on la mets dans tableau associatif $aCategorie
+            $aCategorie = $requete->row();    // Méthode row() nous retourne un objet 
 
             return $aCategorie;            
         }
